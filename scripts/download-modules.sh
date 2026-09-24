@@ -9,12 +9,12 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 EXTRA_ADDONS_DIR="$PROJECT_ROOT/extra-addons"
 
-# Default repositori ekosistem modul wakaf FWP
-REPO_URL="${WAQF_MODULES_REPO:-https://github.com/forumwakafproduktif/waqf-odoo-modules.git}"
-BRANCH="${WAQF_MODULES_BRANCH:-17.0}"
+# Default repositori ekosistem modul wakaf FWP & ANI
+REPO_URL="${WAQF_MODULES_REPO:-https://github.com/ridloabelian/waqf-odoo-modules.git}"
+BRANCH="${WAQF_MODULES_BRANCH:-19.0}"
 
 echo "===================================================================="
-echo "      UNDUH / PERBARUI MODUL WAKAF FWP (PSAK 112 & LSP BWI)        "
+echo "    UNDUH / PERBARUI MODUL WAKAF (PSAK 412/112 & LSP BWI)          "
 echo "===================================================================="
 echo "Direktori target: $EXTRA_ADDONS_DIR"
 echo "Repositori:       $REPO_URL"
