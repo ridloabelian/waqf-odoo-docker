@@ -192,3 +192,80 @@ class WaqfPsak112ReportWizard(models.TransientModel):
         """Mencetak laporan PSAK 112 dalam format PDF."""
         self.ensure_one()
         return self.env.ref("l10n_id_waqf_psak112.action_report_psak112_document").report_action(self)
+
+    @api.model
+    def get_dashboard_data(self, date_from=None, date_to=None, report_type="financial_position"):
+        """Endpoint JSON/RPC untuk Komponen OWL Dashboard PSAK 112."""
+        today = fields.Date.today()
+        d_from = fields.Date.from_string(date_from) if date_from else today.replace(month=1, day=1)
+        d_to = fields.Date.from_string(date_to) if date_to else today
+
+        wizard = self.create({
+            "report_type": report_type,
+            "date_from": d_from,
+            "date_to": d_to,
+            "company_id": self.env.company.id,
+        })
+        raw_data = wizard.get_report_data()
+        currency = wizard.currency_id
+
+        # Hitung KPI Utama
+        kas = wizard._get_category_balance("asset_cash_waqf", d_to)
+        inv = wizard._get_category_balance("asset_investment", d_to)
+        tanah = wizard._get_category_balance("asset_land", d_to)
+        bld = wizard._get_category_balance("asset_building", d_to)
+        dep = wizard._get_category_balance("asset_accum_depr", d_to)
+        total_aset = kas + inv + tanah + bld - abs(dep)
+
+        net_perm = wizard._get_category_balance("net_asset_permanent", d_to)
+        net_temp = wizard._get_category_balance("net_asset_temporary", d_to)
+        net_unrest = wizard._get_category_balance("net_asset_unrestricted", d_to)
+
+        # Hitung rasio hak nazhir periode berjalan
+        gross_yield = wizard._get_category_balance("revenue_yield", d_to, cumulative=False)
+        direct_exp = wizard._get_category_balance("expense_management", d_to, cumulative=False)
+        net_yield = max(gross_yield - direct_exp, 0.0)
+        nazhir_exp = wizard._get_category_balance("expense_nazhir_share", d_to, cumulative=False)
+        nazhir_pct = (nazhir_exp / net_yield * 100.0) if net_yield > 0 else 0.0
+
+        res = {
+            "currency_symbol": currency.symbol or "Rp",
+            "date_from": str(d_from),
+            "date_to": str(d_to),
+            "report_type": report_type,
+            "company_name": wizard.company_id.name,
+            "kpis": {
+                "total_aset": total_aset,
+                "total_aset_fmt": currency.format(total_aset),
+                "net_perm": net_perm,
+                "net_perm_fmt": currency.format(net_perm),
+                "net_temp": net_temp,
+                "net_temp_fmt": currency.format(net_temp),
+                "net_unrest": net_unrest,
+                "net_unrest_fmt": currency.format(net_unrest),
+                "nazhir_pct": round(nazhir_pct, 2),
+                "nazhir_valid": nazhir_pct <= 10.0,
+            },
+            "data": {},
+        }
+
+        if report_type == "financial_position" and "position" in raw_data:
+            pos = raw_data["position"]
+            res["data"] = {k: {"val": v, "fmt": currency.format(v)} for k, v in pos.items()}
+        elif report_type == "activity" and "activity" in raw_data:
+            act = raw_data["activity"]
+            res["data"] = {k: {"val": v, "fmt": currency.format(v)} for k, v in act.items()}
+        elif report_type == "cash_flow" and "cash_flow" in raw_data:
+            cf = raw_data["cash_flow"]
+            res["data"] = {k: {"val": v, "fmt": currency.format(v)} for k, v in cf.items()}
+        elif report_type == "asset_detail" and "asset_detail" in raw_data:
+            ad = raw_data["asset_detail"]
+            res["data"] = {
+                "cash_permanent": {"val": ad["cash_permanent"], "fmt": currency.format(ad["cash_permanent"])},
+                "cash_temporary": {"val": ad["cash_temporary"], "fmt": currency.format(ad["cash_temporary"])},
+                "immovable_land": {"val": ad["immovable_land"], "fmt": currency.format(ad["immovable_land"])},
+                "immovable_building": {"val": ad["immovable_building"], "fmt": currency.format(ad["immovable_building"])},
+                "movable_other": {"val": ad["movable_other"], "fmt": currency.format(ad["movable_other"])},
+            }
+
+        return res

@@ -6,6 +6,13 @@
               parent="waqf_core.menu_waqf_root"
               sequence="20"/>
 
+    <!-- Submenu: Dashboard & Pelaporan PSAK 112 (OWL Component) -->
+    <menuitem id="menu_waqf_psak112_dashboard"
+              name="Dashboard &amp; Laporan PSAK 112"
+              parent="menu_waqf_accounting_psak112"
+              action="action_waqf_psak112_dashboard"
+              sequence="5"/>
+
     <!-- Submenu: Perhitungan Hak Nazhir -->
     <menuitem id="menu_waqf_nazhir_share"
               name="Hak Nazhir (Maks 10% UU 41/2004)"
@@ -13,9 +20,9 @@
               action="action_waqf_nazhir_share"
               sequence="10"/>
 
-    <!-- Submenu: 4 Laporan Wajib PSAK 112 -->
+    <!-- Submenu: Cetak 4 Laporan Wajib PSAK 112 (PDF Wizard) -->
     <menuitem id="menu_waqf_psak112_reports"
-              name="4 Laporan Keuangan PSAK 112"
+              name="Cetak Laporan PDF (PSAK 112)"
               parent="menu_waqf_accounting_psak112"
               action="action_waqf_psak112_report_wizard"
               sequence="20"/>

@@ -3,8 +3,8 @@
 
 {
     "name": "Akuntansi Wakaf PSAK 112 & Regulasi UU 41/2004",
-    "summary": "Standar Bagan Akun PSAK 112, Klasifikasi Aset Neto, Batasan Hak Nazhir 10%, dan 4 Laporan Keuangan Wajib",
-    "version": "17.0.1.0.0",
+    "summary": "Standar Bagan Akun PSAK 112, Engine account.report, Klasifikasi Aset Neto, Batasan Hak Nazhir 10%, dan Dashboard OWL",
+    "version": "19.0.1.0.0",
     "category": "Accounting/Localizations",
     "author": "Forum Wakaf Produktif (FWP), Odoo Community Association (OCA)",
     "website": "https://fwp.or.id",
@@ -19,14 +19,21 @@
     "data": [
         "security/ir.model.access.csv",
         "data/account_chart_template_data.xml",
+        "data/account_report_psak112_data.xml",
         "views/account_account_views.xml",
         "views/account_move_views.xml",
         "views/nazhir_share_views.xml",
         "views/psak112_report_wizard_views.xml",
+        "views/psak112_dashboard_views.xml",
         "views/waqf_accounting_menus.xml",
         "report/psak112_reports.xml",
         "report/psak112_report_templates.xml",
     ],
+    "assets": {
+        "web.assets_backend": [
+            "l10n_id_waqf_psak112/static/src/components/**/*",
+        ],
+    },
     "images": [
         "static/description/icon.png",
     ],

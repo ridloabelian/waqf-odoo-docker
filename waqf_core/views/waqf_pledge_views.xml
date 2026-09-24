@@ -180,12 +180,12 @@
         </field>
     </record>
 
-    <!-- Tree / List View: Waqf Pledge -->
-    <record id="view_waqf_pledge_tree" model="ir.ui.view">
-        <field name="name">waqf.pledge.tree</field>
+    <!-- List View: Waqf Pledge -->
+    <record id="view_waqf_pledge_list" model="ir.ui.view">
+        <field name="name">waqf.pledge.list</field>
         <field name="model">waqf.pledge</field>
         <field name="arch" type="xml">
-            <tree string="Daftar Akta Ikrar Wakaf (AIW)"
+            <list string="Daftar Akta Ikrar Wakaf (AIW)"
                   decoration-info="state == 'draft'"
                   decoration-warning="state in ('verified_legal', 'approved_nazhir')"
                   decoration-success="state == 'issued'"
@@ -207,7 +207,7 @@
                        decoration-success="state == 'issued'"
                        decoration-danger="state == 'cancel'"/>
                 <field name="company_id" groups="base.group_multi_company" optional="hide"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -249,7 +249,7 @@
     <record id="action_waqf_pledge" model="ir.actions.act_window">
         <field name="name">Ikrar Wakaf (AIW / APAIW)</field>
         <field name="res_model">waqf.pledge</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="search_view_id" ref="view_waqf_pledge_search"/>
         <field name="context">{'search_default_filter_issued': 0}</field>
         <field name="help" type="html">

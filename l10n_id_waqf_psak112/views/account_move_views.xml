@@ -8,8 +8,8 @@
             <field name="ref" position="after">
                 <field name="waqf_pledge_id" options="{'no_create': True}" placeholder="Pilih AIW / APAIW terkait..."/>
             </field>
-            <!-- Add column in line_ids -->
-            <xpath expr="//field[@name='line_ids']/tree/field[@name='account_id']" position="after">
+            <!-- Add column in line_ids (compatible with list tag in 18/19 and tree in 17) -->
+            <xpath expr="//field[@name='line_ids']//field[@name='account_id']" position="after">
                 <field name="waqf_net_asset_type" optional="show" widget="badge"
                        decoration-primary="waqf_net_asset_type == 'permanent'"
                        decoration-warning="waqf_net_asset_type == 'temporary'"

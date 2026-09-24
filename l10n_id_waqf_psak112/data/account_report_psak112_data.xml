@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- ============================================================ -->
+        <!-- 1. LAPORAN POSISI KEUANGAN PSAK 112 (account.report)         -->
+        <!-- ============================================================ -->
+        <record id="psak112_report_posisi_keuangan" model="account.report">
+            <field name="name">Laporan Posisi Keuangan (PSAK 112)</field>
+            <field name="filter_period_comparison" eval="True"/>
+            <field name="filter_growth_comparison" eval="False"/>
+            <field name="filter_unfold_all" eval="True"/>
+            <field name="column_ids">
+                <record id="psak112_col_posisi_balance" model="account.report.column">
+                    <field name="name">Saldo (IDR)</field>
+                    <field name="expression_label">balance</field>
+                    <field name="figure_type">monetary</field>
+                </record>
+            </field>
+            <field name="line_ids">
+                <!-- Section ASET -->
+                <record id="line_psak112_sec_aset" model="account.report.line">
+                    <field name="name">ASET WAKAF</field>
+                    <field name="code">SEC_ASET</field>
+                    <field name="hierarchy_level">0</field>
+                    <field name="sequence">10</field>
+                </record>
+                <record id="line_psak112_kas_wakaf" model="account.report.line">
+                    <field name="name">Kas &amp; Setara Kas Wakaf (LKS-PWU)</field>
+                    <field name="code">POS_CASH</field>
+                    <field name="parent_id" ref="line_psak112_sec_aset"/>
+                    <field name="sequence">20</field>
+                    <field name="expression_ids">
+                        <record id="exp_psak112_kas_wakaf" model="account.report.expression">
+                            <field name="label">balance</field>
+                            <field name="engine">account_codes</field>
+                            <field name="formula">1101%</field>
+                            <field name="subformula">debit - credit</field>
+                            <field name="figure_type">monetary</field>
+                        </record>
+                    </field>
+                </record>
+                <record id="line_psak112_piutang" model="account.report.line">
+                    <field name="name">Piutang Bagi Hasil &amp; Pengelolaan</field>
+                    <field name="code">POS_REC</field>
+                    <field name="parent_id" ref="line_psak112_sec_aset"/>
+                    <field name="sequence">30</field>
+                    <field name="expression_ids">
+                        <record id="exp_psak112_piutang" model="account.report.expression">
+                            <field name="label">balance</field>
+                            <field name="engine">account_codes</field>
+                            <field name="formula">1102%</field>
+                            <field name="subformula">debit - credit</field>
+                            <field name="figure_type">monetary</field>
+                        </record>
+                    </field>
+                </record>
+                <record id="line_psak112_investasi" model="account.report.line">
+                    <field name="name">Investasi Portofolio Produktif (Sukuk/CWLS/Saham Syariah)</field>
+                    <field name="code">POS_INV</field>
+                    <field name="parent_id" ref="line_psak112_sec_aset"/>
+                    <field name="sequence">40</field>
+                    <field name="expression_ids">
+                        <record id="exp_psak112_investasi" model="account.report.expression">
+                            <field name="label">balance</field>
+                            <field name="engine">account_codes</field>
+                            <field name="formula">1201%</field>
+                            <field name="subformula">debit - credit</field>
+                            <field name="figure_type">monetary</field>
+                        </record>
+                    </field>
+                </record>
+                <record id="line_psak112_tanah" model="account.report.line">
+                    <field name="name">Aset Tetap Wakaf - Tanah</field>
+                    <field name="code">POS_LAND</field>
+                    <field name="parent_id" ref="line_psak112_sec_aset"/>
+                    <field name="sequence">50</field>
+                    <field name="expression_ids">
+                        <record id="exp_psak112_tanah" model="account.report.expression">
+                            <field name="label">balance</field>
+                            <field name="engine">account_codes</field>
+                            <field name="formula">1301%</field>
+                            <field name="subformula">debit - credit</field>
+                            <field name="figure_type">monetary</field>
+                        </record>
+                    </field>
+                </record>
+                <record id="line_psak112_bangunan" model="account.report.line">
+                    <field name="name">Aset Tetap Wakaf - Bangunan &amp; Sarana Fisik</field>
+                    <field name="code">POS_BLD</field>
+                    <field name="parent_id" ref="line_psak112_sec_aset"/>
+                    <field name="sequence">60</field>
+                    <field name="expression_ids">
+                        <record id="exp_psak112_bangunan" model="account.report.expression">
+                            <field name="label">balance</field>
+                            <field name="engine">account_codes</field>
+                            <field name="formula">1302%</field>
+                            <field name="subformula">debit - credit</field>
+                            <field name="figure_type">monetary</field>
+                        </record>
+                    </field>
+                </record>
+                <record id="line_psak112_penyusutan" model="account.report.line">
+                    <field name="name">Akumulasi Penyusutan Bangunan</field>
+                    <field name="code">POS_DEP</field>
+                    <field name="parent_id" ref="line_psak112_sec_aset"/>
+                    <field name="sequence">70</field>
+                    <field name="expression_ids">
+                        <record id="exp_psak112_penyusutan" model="account.report.expression">
+                            <field name="label">balance</field>
+                            <field name="engine">account_codes</field>
+                            <field name="formula">1303%</field>
+                            <field name="subformula">debit - credit</field>
+                            <field name="figure_type">monetary</field>
+                        </record>
+                    </field>
+                </record>
+                <record id="line_psak112_total_aset" model="account.report.line">
+                    <field name="name">TOTAL ASET WAKAF</field>
+                    <field name="code">TOTAL_ASET</field>
+                    <field name="hierarchy_level">0</field>
+                    <field name="sequence">80</field>
+                    <field name="expression_ids">
+                        <record id="exp_psak112_total_aset" model="account.report.expression">
+                            <field name="label">balance</field>
+                            <field name="engine">aggregation</field>
+                            <field name="formula">POS_CASH.balance + POS_REC.balance + POS_INV.balance + POS_LAND.balance + POS_BLD.balance + POS_DEP.balance</field>
+                            <field name="figure_type">monetary</field>
+                        </record>
+                    </field>
+                </record>
+
+                <!-- Section LIABILITAS -->
+                <record id="line_psak112_sec_liab" model="account.report.line">
+                    <field name="name">LIABILITAS</field>
+                    <field name="code">SEC_LIAB</field>
+                    <field name="hierarchy_level">0</field>
+                    <field name="sequence">90</field>
+                </record>
+                <record id="line_psak112_liab_pendek" model="account.report.line">
+                    <field name="name">Liabilitas Jangka Pendek Pengelolaan</field>
+                    <field name="code">POS_LIAB_CUR</field>
+                    <field name="parent_id" ref="line_psak112_sec_liab"/>
+                    <field name="sequence">100</field>
+                    <field name="expression_ids">
+                        <record id="exp_psak112_liab_pendek" model="account.report.expression">
+                            <field name="label">balance</field>
+                            <field name="engine">account_codes</field>
+                            <field name="formula">2101%</field>
+                            <field name="subformula">credit - debit</field>
+                            <field name="figure_type">monetary</field>
+                        </record>
+                    </field>
+                </record>
+                <record id="line_psak112_nazhir_pay" model="account.report.line">
+                    <field name="name">Utang / Titipan Imbalan Hak Nazhir</field>
+                    <field name="code">POS_NAZHIR_PAY</field>
+                    <field name="parent_id" ref="line_psak112_sec_liab"/>
+                    <field name="sequence">110</field>
+                    <field name="expression_ids">
+                        <record id="exp_psak112_nazhir_pay" model="account.report.expression">
+                            <field name="label">balance</field>
+                            <field name="engine">account_codes</field>
+                            <field name="formula">2102%</field>
+                            <field name="subformula">credit - debit</field>
+                            <field name="figure_type">monetary</field>
+                        </record>
+                    </field>
+                </record>
+                <record id="line_psak112_liab_temporer" model="account.report.line">
+                    <field name="name">Liabilitas Pengembalian Pokok Wakaf Berjangka</field>
+                    <field name="code">POS_TEMP_DUE</field>
+                    <field name="parent_id" ref="line_psak112_sec_liab"/>
+                    <field name="sequence">120</field>
+                    <field name="expression_ids">
+                        <record id="exp_psak112_liab_temporer" model="account.report.expression">
+                            <field name="label">balance</field>
+                            <field name="engine">account_codes</field>
+                            <field name="formula">2201%</field>
+                            <field name="subformula">credit - debit</field>
+                            <field name="figure_type">monetary</field>
+                        </record>
+                    </field>
+                </record>
+                <record id="line_psak112_total_liab" model="account.report.line">
+                    <field name="name">TOTAL LIABILITAS</field>
+                    <field name="code">TOTAL_LIAB</field>
+                    <field name="hierarchy_level">0</field>
+                    <field name="sequence">130</field>
+                    <field name="expression_ids">
+                        <record id="exp_psak112_total_liab" model="account.report.expression">
+                            <field name="label">balance</field>
+                            <field name="engine">aggregation</field>
+                            <field name="formula">POS_LIAB_CUR.balance + POS_NAZHIR_PAY.balance + POS_TEMP_DUE.balance</field>
+                            <field name="figure_type">monetary</field>
+                        </record>
+                    </field>
+                </record>
+
+                <!-- Section ASET NETO (PSAK 112) -->
+                <record id="line_psak112_sec_neto" model="account.report.line">
+                    <field name="name">ASET NETO (PSAK 112)</field>
+                    <field name="code">SEC_NETO</field>
+                    <field name="hierarchy_level">0</field>
+                    <field name="sequence">140</field>
+                </record>
+                <record id="line_psak112_net_permanen" model="account.report.line">
+                    <field name="name">Aset Neto Terikat Permanen (Pokok Wakaf Abadi)</field>
+                    <field name="code">POS_NET_PERM</field>
+                    <field name="parent_id" ref="line_psak112_sec_neto"/>
+                    <field name="sequence">150</field>
+                    <field name="expression_ids">
+                        <record id="exp_psak112_net_permanen" model="account.report.expression">
+                            <field name="label">balance</field>
+                            <field name="engine">account_codes</field>
+                            <field name="formula">3101%</field>
+                            <field name="subformula">credit - debit</field>
+                            <field name="figure_type">monetary</field>
+                        </record>
+                    </field>
+                </record>
+                <record id="line_psak112_net_temporer" model="account.report.line">
+                    <field name="name">Aset Neto Terikat Temporer (Pokok Wakaf Berjangka)</field>
+                    <field name="code">POS_NET_TEMP</field>
+                    <field name="parent_id" ref="line_psak112_sec_neto"/>
+                    <field name="sequence">160</field>
+                    <field name="expression_ids">
+                        <record id="exp_psak112_net_temporer" model="account.report.expression">
+                            <field name="label">balance</field>
+                            <field name="engine">account_codes</field>
+                            <field name="formula">3201%</field>
+                            <field name="subformula">credit - debit</field>
+                            <field name="figure_type">monetary</field>
+                        </record>
+                    </field>
+                </record>
+                <record id="line_psak112_net_unrest" model="account.report.line">
+                    <field name="name">Aset Neto Tidak Terikat (Surplus Pengelolaan Belum Disalurkan)</field>
+                    <field name="code">POS_NET_UNREST</field>
+                    <field name="parent_id" ref="line_psak112_sec_neto"/>
+                    <field name="sequence">170</field>
+                    <field name="expression_ids">
+                        <record id="exp_psak112_net_unrest" model="account.report.expression">
+                            <field name="label">balance</field>
+                            <field name="engine">account_codes</field>
+                            <field name="formula">3301%</field>
+                            <field name="subformula">credit - debit</field>
+                            <field name="figure_type">monetary</field>
+                        </record>
+                    </field>
+                </record>
+                <record id="line_psak112_total_neto" model="account.report.line">
+                    <field name="name">TOTAL ASET NETO</field>
+                    <field name="code">TOTAL_NETO</field>
+                    <field name="hierarchy_level">0</field>
+                    <field name="sequence">180</field>
+                    <field name="expression_ids">
+                        <record id="exp_psak112_total_neto" model="account.report.expression">
+                            <field name="label">balance</field>
+                            <field name="engine">aggregation</field>
+                            <field name="formula">POS_NET_PERM.balance + POS_NET_TEMP.balance + POS_NET_UNREST.balance</field>
+                            <field name="figure_type">monetary</field>
+                        </record>
+                    </field>
+                </record>
+                <record id="line_psak112_total_liab_neto" model="account.report.line">
+                    <field name="name">TOTAL LIABILITAS DAN ASET NETO</field>
+                    <field name="code">TOTAL_LIAB_NETO</field>
+                    <field name="hierarchy_level">0</field>
+                    <field name="sequence">190</field>
+                    <field name="expression_ids">
+                        <record id="exp_psak112_total_liab_neto" model="account.report.expression">
+                            <field name="label">balance</field>
+                            <field name="engine">aggregation</field>
+                            <field name="formula">TOTAL_LIAB.balance + TOTAL_NETO.balance</field>
+                            <field name="figure_type">monetary</field>
+                        </record>
+                    </field>
+                </record>
+            </field>
+        </record>
+
+        <!-- ============================================================ -->
+        <!-- 2. LAPORAN AKTIVITAS PSAK 112 (account.report)               -->
+        <!-- ============================================================ -->
+        <record id="psak112_report_aktivitas" model="account.report">
+            <field name="name">Laporan Aktivitas (PSAK 112)</field>
+            <field name="filter_period_comparison" eval="True"/>
+            <field name="filter_growth_comparison" eval="False"/>
+            <field name="filter_unfold_all" eval="True"/>
+            <field name="column_ids">
+                <record id="psak112_col_aktivitas_balance" model="account.report.column">
+                    <field name="name">Jumlah (IDR)</field>
+                    <field name="expression_label">balance</field>
+                    <field name="figure_type">monetary</field>
+                </record>
+            </field>
+            <field name="line_ids">
+                <!-- Section Penerimaan -->
+                <record id="line_psak112_sec_penerimaan" model="account.report.line">
+                    <field name="name">PENERIMAAN WAKAF &amp; HASIL PENGELOLAAN</field>
+                    <field name="code">SEC_REV</field>
+                    <field name="hierarchy_level">0</field>
+                    <field name="sequence">10</field>
+                </record>
+                <record id="line_psak112_rev_permanen" model="account.report.line">
+                    <field name="name">Penerimaan Wakaf Uang Permanen</field>
+                    <field name="code">REV_CASH_PERM</field>
+                    <field name="parent_id" ref="line_psak112_sec_penerimaan"/>
+                    <field name="sequence">20</field>
+                    <field name="expression_ids">
+                        <record id="exp_psak112_rev_permanen" model="account.report.expression">
+                            <field name="label">balance</field>
+                            <field name="engine">account_codes</field>
+                            <field name="formula">4101%</field>
+                            <field name="subformula">credit - debit</field>
+                            <field name="figure_type">monetary</field>
+                        </record>
+                    </field>
+                </record>
+                <record id="line_psak112_rev_temporer" model="account.report.line">
+                    <field name="name">Penerimaan Wakaf Uang Temporer</field>
+                    <field name="code">REV_CASH_TEMP</field>
+                    <field name="parent_id" ref="line_psak112_sec_penerimaan"/>
+                    <field name="sequence">30</field>
+                    <field name="expression_ids">
+                        <record id="exp_psak112_rev_temporer" model="account.report.expression">
+                            <field name="label">balance</field>
+                            <field name="engine">account_codes</field>
+                            <field name="formula">4102%</field>
+                            <field name="subformula">credit - debit</field>
+                            <field name="figure_type">monetary</field>
+                        </record>
+                    </field>
+                </record>
+                <record id="line_psak112_rev_nonkas" model="account.report.line">
+                    <field name="name">Penerimaan Wakaf Selain Uang</field>
+                    <field name="code">REV_NONCASH</field>
+                    <field name="parent_id" ref="line_psak112_sec_penerimaan"/>
+                    <field name="sequence">40</field>
+                    <field name="expression_ids">
+                        <record id="exp_psak112_rev_nonkas" model="account.report.expression">
+                            <field name="label">balance</field>
+                            <field name="engine">account_codes</field>
+                            <field name="formula">4103%</field>
+                            <field name="subformula">credit - debit</field>
+                            <field name="figure_type">monetary</field>
+                        </record>
+                    </field>
+                </record>
+                <record id="line_psak112_rev_yield" model="account.report.line">
+                    <field name="name">Hasil Pengelolaan &amp; Pengembangan Wakaf Produktif</field>
+                    <field name="code">REV_YIELD</field>
+                    <field name="parent_id" ref="line_psak112_sec_penerimaan"/>
+                    <field name="sequence">50</field>
+                    <field name="expression_ids">
+                        <record id="exp_psak112_rev_yield" model="account.report.expression">
+                            <field name="label">balance</field>
+                            <field name="engine">account_codes</field>
+                            <field name="formula">4201%</field>
+                            <field name="subformula">credit - debit</field>
+                            <field name="figure_type">monetary</field>
+                        </record>
+                    </field>
+                </record>
+                <record id="line_psak112_total_penerimaan" model="account.report.line">
+                    <field name="name">TOTAL PENERIMAAN WAKAF &amp; HASIL KELOLAAN</field>
+                    <field name="code">TOTAL_REV</field>
+                    <field name="hierarchy_level">0</field>
+                    <field name="sequence">60</field>
+                    <field name="expression_ids">
+                        <record id="exp_psak112_total_penerimaan" model="account.report.expression">
+                            <field name="label">balance</field>
+                            <field name="engine">aggregation</field>
+                            <field name="formula">REV_CASH_PERM.balance + REV_CASH_TEMP.balance + REV_NONCASH.balance + REV_YIELD.balance</field>
+                            <field name="figure_type">monetary</field>
+                        </record>
+                    </field>
+                </record>
+
+                <!-- Section Pengeluaran / Beban -->
+                <record id="line_psak112_sec_beban" model="account.report.line">
+                    <field name="name">PENGELUARAN &amp; PENYALURAN</field>
+                    <field name="code">SEC_EXP</field>
+                    <field name="hierarchy_level">0</field>
+                    <field name="sequence">70</field>
+                </record>
+                <record id="line_psak112_exp_nazhir" model="account.report.line">
+                    <field name="name">Bagian Hak Imbalan Nazhir (Maks 10% UU 41/2004)</field>
+                    <field name="code">EXP_NAZHIR</field>
+                    <field name="parent_id" ref="line_psak112_sec_beban"/>
+                    <field name="sequence">80</field>
+                    <field name="expression_ids">
+                        <record id="exp_psak112_exp_nazhir" model="account.report.expression">
+                            <field name="label">balance</field>
+                            <field name="engine">account_codes</field>
+                            <field name="formula">5101%</field>
+                            <field name="subformula">debit - credit</field>
+                            <field name="figure_type">monetary</field>
+                        </record>
+                    </field>
+                </record>
+                <record id="line_psak112_exp_kelola" model="account.report.line">
+                    <field name="name">Beban Operasional Pengelolaan &amp; Pemeliharaan Aset</field>
+                    <field name="code">EXP_MGMT</field>
+                    <field name="parent_id" ref="line_psak112_sec_beban"/>
+                    <field name="sequence">90</field>
+                    <field name="expression_ids">
+                        <record id="exp_psak112_exp_kelola" model="account.report.expression">
+                            <field name="label">balance</field>
+                            <field name="engine">account_codes</field>
+                            <field name="formula">5201%</field>
+                            <field name="subformula">debit - credit</field>
+                            <field name="figure_type">monetary</field>
+                        </record>
+                    </field>
+                </record>
+                <record id="line_psak112_exp_salur" model="account.report.line">
+                    <field name="name">Penyaluran Manfaat Wakaf kepada Mauquf 'Alaih</field>
+                    <field name="code">EXP_DIST</field>
+                    <field name="parent_id" ref="line_psak112_sec_beban"/>
+                    <field name="sequence">100</field>
+                    <field name="expression_ids">
+                        <record id="exp_psak112_exp_salur" model="account.report.expression">
+                            <field name="label">balance</field>
+                            <field name="engine">account_codes</field>
+                            <field name="formula">5301%</field>
+                            <field name="subformula">debit - credit</field>
+                            <field name="figure_type">monetary</field>
+                        </record>
+                    </field>
+                </record>
+                <record id="line_psak112_total_beban" model="account.report.line">
+                    <field name="name">TOTAL PENGELUARAN &amp; PENYALURAN</field>
+                    <field name="code">TOTAL_EXP</field>
+                    <field name="hierarchy_level">0</field>
+                    <field name="sequence">110</field>
+                    <field name="expression_ids">
+                        <record id="exp_psak112_total_beban" model="account.report.expression">
+                            <field name="label">balance</field>
+                            <field name="engine">aggregation</field>
+                            <field name="formula">EXP_NAZHIR.balance + EXP_MGMT.balance + EXP_DIST.balance</field>
+                            <field name="figure_type">monetary</field>
+                        </record>
+                    </field>
+                </record>
+                <record id="line_psak112_surplus_aktivitas" model="account.report.line">
+                    <field name="name">KENAIKAN (PENURUNAN) ASET NETO PERIODE BERJALAN</field>
+                    <field name="code">NET_SURPLUS</field>
+                    <field name="hierarchy_level">0</field>
+                    <field name="sequence">120</field>
+                    <field name="expression_ids">
+                        <record id="exp_psak112_surplus_aktivitas" model="account.report.expression">
+                            <field name="label">balance</field>
+                            <field name="engine">aggregation</field>
+                            <field name="formula">TOTAL_REV.balance - TOTAL_EXP.balance</field>
+                            <field name="figure_type">monetary</field>
+                        </record>
+                    </field>
+                </record>
+            </field>
+        </record>
+    </data>
+</odoo>

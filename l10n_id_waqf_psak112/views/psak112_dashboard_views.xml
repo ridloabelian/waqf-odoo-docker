@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Client Action: Interactive OWL Dashboard for PSAK 112 Reports -->
+    <record id="action_waqf_psak112_dashboard" model="ir.actions.client">
+        <field name="name">Dashboard &amp; Pelaporan PSAK 112</field>
+        <field name="tag">waqf_psak112_dashboard</field>
+        <field name="target">current</field>
+    </record>
+</odoo>
