@@ -1,0 +1,54 @@
+name: OCA & Python Linting CI
+
+on:
+  push:
+    branches: [ "19.0", "18.0", "17.0" ]
+  pull_request:
+    branches: [ "19.0", "18.0", "17.0" ]
+
+jobs:
+  lint-and-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate XML Syntax
+        run: |
+          python3 -c "
+          import xml.etree.ElementTree as ET
+          import glob
+          xml_files = sorted(glob.glob('**/*.xml', recursive=True))
+          print(f'Checking {len(xml_files)} XML files...')
+          for f in xml_files:
+              try:
+                  ET.parse(f)
+              except Exception as e:
+                  print(f'ERROR parsing {f}: {e}')
+                  exit(1)
+          print('All XML files are valid.')
+          "
+
+      - name: Compile Python Files
+        run: |
+          python3 -m py_compile waqf_core/*.py waqf_core/models/*.py
+          python3 -m py_compile l10n_id_waqf_psak112/*.py l10n_id_waqf_psak112/models/*.py
+          echo "All Python files compiled successfully."
+
+      - name: Check Manifest Integrity
+        run: |
+          python3 -c "
+          import ast
+          for manifest_path in ['waqf_core/__manifest__.py', 'l10n_id_waqf_psak112/__manifest__.py']:
+              with open(manifest_path) as f:
+                  m = ast.literal_eval(f.read())
+                  assert m.get('name'), f'Missing name in {manifest_path}'
+                  assert m.get('license') == 'LGPL-3', f'License must be LGPL-3 in {manifest_path}'
+                  assert m.get('installable') is True, f'Must be installable in {manifest_path}'
+                  print(f'Valid manifest: {m[\"name\"]} (v{m[\"version\"]})')
+          "
