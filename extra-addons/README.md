@@ -2,9 +2,9 @@
 
 Direktori ini di-*mount* langsung ke dalam container Odoo pada path `/mnt/extra-addons`.
 
-## 📦 Struktur Modul Ekosistem FWP & ANI
+## 📦 Struktur Modul Ekosistem Amal Produktif, FWP & ANI
 
-Modul-modul sistem ERP Wakaf hasil kolaborasi FWP dan Asosiasi Nazhir Indonesia (ANI) yang direkomendasikan meliputi:
+Modul-modul sistem ERP Wakaf hasil kolaborasi Amal Produktif, FWP, dan Asosiasi Nazhir Indonesia (ANI) yang direkomendasikan meliputi:
 
 1. **`waqf_core`**
    - Manajemen Master Data: Profil Nazhir, Data Wakif (Individu & Korporasi), Data Mauquf 'Alaih.
