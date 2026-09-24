@@ -7,7 +7,7 @@
     "version": "19.0.1.0.0",
     "category": "Accounting/Localizations",
     "author": "Forum Wakaf Produktif (FWP), Asosiasi Nazhir Indonesia (ANI), Odoo Community Association (OCA)",
-    "website": "https://fwp.or.id, https://nazhir.or.id",
+    "website": "https://fwp.or.id, https://ani.or.id",
     "license": "LGPL-3",
     "application": False,
     "installable": True,

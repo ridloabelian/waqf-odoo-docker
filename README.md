@@ -1,7 +1,7 @@
 # 🕌 Waqf Odoo Docker
 
 > **Paket Instalasi Turnkey (1-Click Ready-to-Deploy) Sistem ERP Wakaf Berstandar PSAK 412 (PSAK 112) & LSP BWI**  
-> Inisiatif kolaboratif **Forum Wakaf Produktif (FWP / [fwp.or.id](https://fwp.or.id))** bersama **Asosiasi Nazhir Indonesia (ANI / [nazhir.or.id](https://nazhir.or.id))** untuk kemandirian, transparansi, dan tata kelola Nazhir di seluruh Indonesia.
+> Inisiatif kolaboratif **Forum Wakaf Produktif (FWP / [fwp.or.id](https://fwp.or.id))** bersama **Asosiasi Nazhir Indonesia (ANI / [ani.or.id](https://ani.or.id))** untuk kemandirian, transparansi, dan tata kelola Nazhir di seluruh Indonesia.
 
 [![Odoo Version](https://img.shields.io/badge/Odoo-19.0%20%7C%2017.0%20Community-714B67?logo=odoo&logoColor=white)](https://www.odoo.com)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17--alpine%20%7C%2016-336791?logo=postgresql&logoColor=white)](https://www.postgresql.org)
@@ -336,7 +336,7 @@ Ubah nilai <code>ADMIN_PASSWORD</code> di dalam file <code>.env</code>, lalu jal
 
 Proyek ini bersifat sumber terbuka (Open-Source) di bawah lisensi **LGPL-3.0**. Diinisiasi secara kolaboratif oleh:
 - **Forum Wakaf Produktif (FWP)** – [fwp.or.id](https://fwp.or.id)
-- **Asosiasi Nazhir Indonesia (ANI)** – [nazhir.or.id](https://nazhir.or.id)
+- **Asosiasi Nazhir Indonesia (ANI)** – [ani.or.id](https://ani.or.id)
 - **Didukung oleh Standar Kompetensi**: LSP Badan Wakaf Indonesia (BWI)
 
 Kami mengundang developer, akuntan syariah, akademisi, dan praktisi wakaf di seluruh Indonesia untuk berkontribusi.
