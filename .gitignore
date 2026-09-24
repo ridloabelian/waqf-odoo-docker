@@ -11,6 +11,7 @@ backups/temp/
 /data/
 odoo-data/
 postgres-data/
+/waqf-odoo-modules/
 
 # Caddy Local State (if mounted locally)
 caddy_data/
