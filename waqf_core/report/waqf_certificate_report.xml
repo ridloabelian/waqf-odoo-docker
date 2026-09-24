@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_waqf_certificate" model="ir.actions.report">
+        <field name="name">Sertifikat Ikrar Wakaf (BWI)</field>
+        <field name="model">waqf.pledge</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">waqf_core.report_waqf_certificate_document</field>
+        <field name="report_file">waqf_core.report_waqf_certificate_document</field>
+        <field name="print_report_name">'Sertifikat_Wakaf_' + (object.document_number or object.name).replace('/', '_')</field>
+        <field name="binding_model_id" ref="model_waqf_pledge"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

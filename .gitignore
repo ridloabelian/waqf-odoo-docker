@@ -1,0 +1,29 @@
+# Environment & Credentials
+.env
+
+# Backups & Dumps
+backups/*.tar.gz
+backups/*.sql
+backups/*.sql.gz
+backups/temp/
+
+# Odoo Runtime & Filestore local mounts (if used locally)
+/data/
+odoo-data/
+postgres-data/
+
+# Caddy Local State (if mounted locally)
+caddy_data/
+caddy_config/
+
+# Python cache (if modules tested locally)
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# OS specific
+.DS_Store
+Thumbs.db
+*.swp
+*~

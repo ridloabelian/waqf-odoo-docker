@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="waqf_type_cash" model="waqf.type">
+        <field name="name">Wakaf Uang (Cash Waqf)</field>
+        <field name="code">WQF-CASH</field>
+        <field name="category">movable_cash</field>
+        <field name="sequence">10</field>
+        <field name="description">Wakaf berupa uang rupiah atau valuta asing yang dikelola melalui Lembaga Keuangan Syariah Penerima Wakaf Uang (LKS-PWU).</field>
+    </record>
+
+    <record id="waqf_type_land" model="waqf.type">
+        <field name="name">Tanah Wakaf</field>
+        <field name="code">WQF-LAND</field>
+        <field name="category">immovable</field>
+        <field name="sequence">20</field>
+        <field name="description">Harta benda tidak bergerak berupa tanah hak milik, hak guna bangunan, atau hak pakai sesuai UU 41/2004.</field>
+    </record>
+
+    <record id="waqf_type_building" model="waqf.type">
+        <field name="name">Bangunan &amp; Gedung Wakaf</field>
+        <field name="code">WQF-BLD</field>
+        <field name="category">immovable</field>
+        <field name="sequence">30</field>
+        <field name="description">Bangunan fisik berupa masjid, gedung sekolah/pesantren, rumah sakit, ruko produktif, dan fasilitas sosial lainnya.</field>
+    </record>
+
+    <record id="waqf_type_precious_metals" model="waqf.type">
+        <field name="name">Logam Mulia &amp; Emas</field>
+        <field name="code">WQF-GOLD</field>
+        <field name="category">movable_other</field>
+        <field name="sequence">40</field>
+        <field name="description">Benda bergerak selain uang berupa emas batangan, perak, atau logam mulia tersertifikasi.</field>
+    </record>
+
+    <record id="waqf_type_sukuk" model="waqf.type">
+        <field name="name">Surat Berharga Syariah (Sukuk/SBSN)</field>
+        <field name="code">WQF-SUKUK</field>
+        <field name="category">movable_other</field>
+        <field name="sequence">50</field>
+        <field name="description">Surat berharga negara/korporasi syariah seperti Cash Waqf Linked Sukuk (CWLS) atau saham syariah.</field>
+    </record>
+
+    <record id="waqf_type_vehicle" model="waqf.type">
+        <field name="name">Kendaraan &amp; Armada Operasional</field>
+        <field name="code">WQF-VEH</field>
+        <field name="category">movable_other</field>
+        <field name="sequence">60</field>
+        <field name="description">Benda bergerak berupa ambulans, mobil operasional dakwah, bus pesantren, atau truk logistik.</field>
+    </record>
+
+    <record id="waqf_type_ipr" model="waqf.type">
+        <field name="name">Hak Kekayaan Intelektual (HAKI) &amp; Royalti</field>
+        <field name="code">WQF-HAKI</field>
+        <field name="category">movable_other</field>
+        <field name="sequence">70</field>
+        <field name="description">Hak cipta buku, paten teknologi, merek dagang, lisensi software, atau royalti yang diwakafkan untuk kepentingan umat.</field>
+    </record>
+</odoo>

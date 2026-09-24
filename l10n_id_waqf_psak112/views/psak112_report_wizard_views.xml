@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_waqf_psak112_report_wizard_form" model="ir.ui.view">
+        <field name="name">waqf.psak112.report.wizard.form</field>
+        <field name="model">waqf.psak112.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Laporan Keuangan Wakaf (PSAK 112)">
+                <group>
+                    <group string="Pilihan Laporan Wajib PSAK 112">
+                        <field name="report_type" widget="radio"/>
+                    </group>
+                    <group string="Periode Pelaporan">
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                    </group>
+                </group>
+                <div class="alert alert-info mt-3" role="alert">
+                    <p class="mb-0">
+                        <strong>Standar Akuntansi Keuangan PSAK 112 (IAI):</strong>
+                        Laporan ini menyajikan informasi posisi keuangan, rincian aset wakaf, aktivitas penerimaan &amp; penyaluran, serta arus kas dengan pemisahan tegas antara Aset Neto Terikat Permanen, Terikat Temporer, dan Tidak Terikat.
+                    </p>
+                </div>
+                <footer>
+                    <button name="action_print_pdf"
+                            string="Cetak Laporan Resmi (PDF)"
+                            type="object"
+                            class="oe_highlight btn-primary"/>
+                    <button string="Tutup" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_waqf_psak112_report_wizard" model="ir.actions.act_window">
+        <field name="name">4 Laporan Keuangan Wajib PSAK 112</field>
+        <field name="res_model">waqf.psak112.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="help" type="html">
+            <p>
+                Cetak 4 Laporan Keuangan Wajib PSAK 112 (Posisi Keuangan, Rincian Aset Wakaf, Aktivitas, dan Arus Kas).
+            </p>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Root Menu: Pengelolaan Wakaf -->
+    <menuitem id="menu_waqf_root"
+              name="Pengelolaan Wakaf"
+              web_icon="waqf_core,static/description/icon.png"
+              sequence="45"/>
+
+    <!-- Category: Operasional Wakaf -->
+    <menuitem id="menu_waqf_operations"
+              name="Operasional Wakaf"
+              parent="menu_waqf_root"
+              sequence="10"/>
+
+    <!-- Submenu: Ikrar Wakaf (AIW/APAIW) -->
+    <menuitem id="menu_waqf_pledge"
+              name="Ikrar Wakaf (AIW / APAIW)"
+              parent="menu_waqf_operations"
+              action="action_waqf_pledge"
+              sequence="10"/>
+
+    <!-- Submenu: Data Wakif -->
+    <menuitem id="menu_waqf_partner"
+              name="Data Wakif"
+              parent="menu_waqf_operations"
+              action="action_waqf_partner"
+              sequence="20"/>
+
+    <!-- Category: Konfigurasi -->
+    <menuitem id="menu_waqf_configuration"
+              name="Konfigurasi"
+              parent="menu_waqf_root"
+              sequence="90"
+              groups="waqf_core.group_waqf_manager"/>
+
+    <!-- Submenu: Jenis Harta Wakaf -->
+    <menuitem id="menu_waqf_type"
+              name="Jenis Harta Benda Wakaf"
+              parent="menu_waqf_configuration"
+              action="action_waqf_type"
+              sequence="10"/>
+</odoo>

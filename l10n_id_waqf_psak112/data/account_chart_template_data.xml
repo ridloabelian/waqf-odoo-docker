@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Sequence for Nazhir Share Calculation -->
+    <record id="seq_waqf_nazhir_share" model="ir.sequence">
+        <field name="name">Nomor Perhitungan Hak Nazhir</field>
+        <field name="code">waqf.nazhir.share</field>
+        <field name="prefix">NZR/%(year)s/</field>
+        <field name="padding">4</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <!-- Standard PSAK 112 Accounts Data -->
+    <!-- 1. ASET -->
+    <record id="account_1101_cash_waqf" model="account.account">
+        <field name="name">Kas &amp; Setara Kas Wakaf (LKS-PWU)</field>
+        <field name="code">110100</field>
+        <field name="account_type">asset_cash</field>
+        <field name="is_waqf_account">True</field>
+        <field name="waqf_net_asset_type">none</field>
+        <field name="psak112_category">asset_cash_waqf</field>
+    </record>
+
+    <record id="account_1102_receivable_yield" model="account.account">
+        <field name="name">Piutang Bagi Hasil &amp; Pengelolaan Wakaf</field>
+        <field name="code">110200</field>
+        <field name="account_type">asset_receivable</field>
+        <field name="is_waqf_account">True</field>
+        <field name="waqf_net_asset_type">none</field>
+        <field name="psak112_category">asset_receivable</field>
+    </record>
+
+    <record id="account_1201_investment_sukuk" model="account.account">
+        <field name="name">Investasi Portofolio Wakaf (Sukuk / CWLS / Saham Syariah)</field>
+        <field name="code">120100</field>
+        <field name="account_type">asset_non_current</field>
+        <field name="is_waqf_account">True</field>
+        <field name="waqf_net_asset_type">none</field>
+        <field name="psak112_category">asset_investment</field>
+    </record>
+
+    <record id="account_1301_land_waqf" model="account.account">
+        <field name="name">Aset Tetap Wakaf - Tanah</field>
+        <field name="code">130100</field>
+        <field name="account_type">asset_fixed</field>
+        <field name="is_waqf_account">True</field>
+        <field name="waqf_net_asset_type">permanent</field>
+        <field name="psak112_category">asset_land</field>
+    </record>
+
+    <record id="account_1302_building_waqf" model="account.account">
+        <field name="name">Aset Tetap Wakaf - Bangunan &amp; Gedung</field>
+        <field name="code">130200</field>
+        <field name="account_type">asset_fixed</field>
+        <field name="is_waqf_account">True</field>
+        <field name="waqf_net_asset_type">permanent</field>
+        <field name="psak112_category">asset_building</field>
+    </record>
+
+    <record id="account_1303_accum_depr_building" model="account.account">
+        <field name="name">Akumulasi Penyusutan Bangunan Wakaf</field>
+        <field name="code">130300</field>
+        <field name="account_type">asset_non_current</field>
+        <field name="is_waqf_account">True</field>
+        <field name="waqf_net_asset_type">none</field>
+        <field name="psak112_category">asset_accum_depr</field>
+    </record>
+
+    <!-- 2. LIABILITAS -->
+    <record id="account_2101_short_liab" model="account.account">
+        <field name="name">Liabilitas Jangka Pendek Pengelolaan</field>
+        <field name="code">210100</field>
+        <field name="account_type">liability_current</field>
+        <field name="is_waqf_account">True</field>
+        <field name="waqf_net_asset_type">none</field>
+        <field name="psak112_category">liability_short</field>
+    </record>
+
+    <record id="account_2102_nazhir_payable" model="account.account">
+        <field name="name">Utang / Titipan Imbalan Hak Nazhir</field>
+        <field name="code">210200</field>
+        <field name="account_type">liability_current</field>
+        <field name="is_waqf_account">True</field>
+        <field name="waqf_net_asset_type">nazhir_share</field>
+        <field name="psak112_category">liability_short</field>
+    </record>
+
+    <record id="account_2201_temporary_due" model="account.account">
+        <field name="name">Liabilitas Pengembalian Pokok Wakaf Berjangka</field>
+        <field name="code">220100</field>
+        <field name="account_type">liability_non_current</field>
+        <field name="is_waqf_account">True</field>
+        <field name="waqf_net_asset_type">temporary</field>
+        <field name="psak112_category">liability_temporary_due</field>
+    </record>
+
+    <!-- 3. ASET NETO (PSAK 112) -->
+    <record id="account_3101_net_asset_permanent" model="account.account">
+        <field name="name">Aset Neto Terikat Permanen (Pokok Wakaf Abadi)</field>
+        <field name="code">310100</field>
+        <field name="account_type">equity</field>
+        <field name="is_waqf_account">True</field>
+        <field name="waqf_net_asset_type">permanent</field>
+        <field name="psak112_category">net_asset_permanent</field>
+    </record>
+
+    <record id="account_3201_net_asset_temporary" model="account.account">
+        <field name="name">Aset Neto Terikat Temporer (Pokok Wakaf Berjangka)</field>
+        <field name="code">320100</field>
+        <field name="account_type">equity</field>
+        <field name="is_waqf_account">True</field>
+        <field name="waqf_net_asset_type">temporary</field>
+        <field name="psak112_category">net_asset_temporary</field>
+    </record>
+
+    <record id="account_3301_net_asset_unrestricted" model="account.account">
+        <field name="name">Aset Neto Tidak Terikat (Surplus Bersih Pengelolaan)</field>
+        <field name="code">330100</field>
+        <field name="account_type">equity_unaffected</field>
+        <field name="is_waqf_account">True</field>
+        <field name="waqf_net_asset_type">unrestricted</field>
+        <field name="psak112_category">net_asset_unrestricted</field>
+    </record>
+
+    <!-- 4. PENERIMAAN WAKAF & HASIL PENGELOLAAN -->
+    <record id="account_4101_receipt_permanent" model="account.account">
+        <field name="name">Penerimaan Wakaf Uang - Permanen (Abadi)</field>
+        <field name="code">410100</field>
+        <field name="account_type">income</field>
+        <field name="is_waqf_account">True</field>
+        <field name="waqf_net_asset_type">permanent</field>
+        <field name="psak112_category">receipt_waqf_cash_permanent</field>
+    </record>
+
+    <record id="account_4102_receipt_temporary" model="account.account">
+        <field name="name">Penerimaan Wakaf Uang - Temporer (Berjangka)</field>
+        <field name="code">410200</field>
+        <field name="account_type">income</field>
+        <field name="is_waqf_account">True</field>
+        <field name="waqf_net_asset_type">temporary</field>
+        <field name="psak112_category">receipt_waqf_cash_temporary</field>
+    </record>
+
+    <record id="account_4103_receipt_noncash" model="account.account">
+        <field name="name">Penerimaan Wakaf Harta Benda Selain Uang</field>
+        <field name="code">410300</field>
+        <field name="account_type">income</field>
+        <field name="is_waqf_account">True</field>
+        <field name="waqf_net_asset_type">permanent</field>
+        <field name="psak112_category">receipt_waqf_noncash</field>
+    </record>
+
+    <record id="account_4201_revenue_yield" model="account.account">
+        <field name="name">Hasil Pengelolaan &amp; Pengembangan Wakaf Produktif</field>
+        <field name="code">420100</field>
+        <field name="account_type">income</field>
+        <field name="is_waqf_account">True</field>
+        <field name="waqf_net_asset_type">unrestricted</field>
+        <field name="psak112_category">revenue_yield</field>
+    </record>
+
+    <!-- 5. BEBAN PENGELOLAAN & PENYALURAN -->
+    <record id="account_5101_nazhir_share" model="account.account">
+        <field name="name">Bagian Hak Nazhir (Maksimal 10% UU 41/2004)</field>
+        <field name="code">510100</field>
+        <field name="account_type">expense</field>
+        <field name="is_waqf_account">True</field>
+        <field name="waqf_net_asset_type">nazhir_share</field>
+        <field name="psak112_category">expense_nazhir_share</field>
+    </record>
+
+    <record id="account_5201_expense_management" model="account.account">
+        <field name="name">Beban Operasional Pengelolaan &amp; Pemeliharaan Aset Wakaf</field>
+        <field name="code">520100</field>
+        <field name="account_type">expense</field>
+        <field name="is_waqf_account">True</field>
+        <field name="waqf_net_asset_type">unrestricted</field>
+        <field name="psak112_category">expense_management</field>
+    </record>
+
+    <record id="account_5301_expense_distribution" model="account.account">
+        <field name="name">Beban Penyaluran Manfaat Wakaf (Mauquf 'Alaih)</field>
+        <field name="code">530100</field>
+        <field name="account_type">expense</field>
+        <field name="is_waqf_account">True</field>
+        <field name="waqf_net_asset_type">unrestricted</field>
+        <field name="psak112_category">expense_distribution</field>
+    </record>
+</odoo>

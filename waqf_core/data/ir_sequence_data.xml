@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="seq_waqf_pledge" model="ir.sequence">
+        <field name="name">Nomor Registrasi Ikrar Wakaf</field>
+        <field name="code">waqf.pledge</field>
+        <field name="prefix">WQF/%(year)s/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+</odoo>

@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_waqf_nazhir_share_user,waqf.nazhir.share.user,model_waqf_nazhir_share,waqf_core.group_waqf_user,1,0,0,0
+access_waqf_nazhir_share_manager,waqf.nazhir.share.manager,model_waqf_nazhir_share,waqf_core.group_waqf_manager,1,1,1,1
+access_waqf_psak112_report_wizard_user,waqf.psak112.report.wizard.user,model_waqf_psak112_report_wizard,waqf_core.group_waqf_user,1,1,1,1

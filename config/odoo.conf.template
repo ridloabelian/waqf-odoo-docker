@@ -1,0 +1,50 @@
+[options]
+; ==============================================================================
+; KONFIGURASI PRODUKSI ODOO 19 / 17 - FORUM WAKAF PRODUKTIF (FWP)
+; Disesuaikan untuk ERP Wakaf Standar PSAK 112 & LSP BWI
+; ==============================================================================
+
+; --- Direktori Addons & Data ---
+addons_path = /mnt/extra-addons,/usr/lib/python3/dist-packages/odoo/addons
+data_dir = /var/lib/odoo
+
+; --- Keamanan & Master Password ---
+; Master password untuk manajemen database (digenerate oleh init-setup.sh)
+admin_passwd = ${ADMIN_PASSWORD}
+
+; Sembunyikan pemilih database dari publik demi keamanan (True saat inisiasi, False di produksi)
+list_db = False
+
+; Aktifkan proxy mode agar Odoo mematuhi header X-Forwarded-* dari Reverse Proxy (Caddy/Nginx)
+proxy_mode = True
+
+; --- Konfigurasi Port & Jaringan ---
+http_interface = 0.0.0.0
+http_port = 8069
+xmlrpc_port = 8069
+gevent_port = 8072
+
+; --- Multi-Worker Tuning (Optimasi VPS 4 GB - 8 GB RAM) ---
+; Rumus: (CPU Cores * 2) + 1. Standar 4 worker untuk 2 vCPU VPS.
+workers = ${ODOO_WORKERS}
+max_cron_threads = 1
+
+; Batas memori per proses worker (dalam bytes)
+; Soft: 2048 MB, Hard: 2560 MB
+limit_memory_soft = ${ODOO_LIMIT_MEMORY_SOFT}
+limit_memory_hard = ${ODOO_LIMIT_MEMORY_HARD}
+
+; Daur ulang worker setelah melayani 8192 request untuk mencegah memory leak
+limit_request = 8192
+
+; Timeout eksekusi (detik) - Diperpanjang untuk laporan keuangan PSAK 112 yang kompleks
+limit_time_cpu = ${ODOO_LIMIT_TIME_CPU}
+limit_time_real = ${ODOO_LIMIT_TIME_REAL}
+
+; --- Logging ---
+; Log diarahkan ke stdout agar dapat dipantau melalui 'docker compose logs -f web'
+logfile = False
+log_level = info
+
+; --- Database Pool Tuning ---
+db_maxconn = 64

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="module_category_waqf" model="ir.module.category">
+        <field name="name">Pengelolaan Wakaf</field>
+        <field name="description">Manajemen Tata Kelola, Legalitas, dan Akuntansi Wakaf Nasional (BWI &amp; PSAK 112)</field>
+        <field name="sequence">25</field>
+    </record>
+
+    <!-- Group: Staff Operasional Wakaf -->
+    <record id="group_waqf_user" model="res.groups">
+        <field name="name">Petugas Operasional Wakaf</field>
+        <field name="category_id" ref="module_category_waqf"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="comment">Pengguna dapat menginput data wakif, pendaftaran AIW/APAIW, dan mencetak dokumen wakaf.</field>
+    </record>
+
+    <!-- Group: Tim Legalitas Wakaf -->
+    <record id="group_waqf_legal" model="res.groups">
+        <field name="name">Verifikator Legal Wakaf</field>
+        <field name="category_id" ref="module_category_waqf"/>
+        <field name="implied_ids" eval="[(4, ref('group_waqf_user'))]"/>
+        <field name="comment">Pengguna berwenang memverifikasi keabsahan dokumen legalitas, tanah, dan sertifikasi wakaf.</field>
+    </record>
+
+    <!-- Group: Pimpinan Nazhir / Manajer -->
+    <record id="group_waqf_manager" model="res.groups">
+        <field name="name">Pimpinan Nazhir / Pengelola</field>
+        <field name="category_id" ref="module_category_waqf"/>
+        <field name="implied_ids" eval="[(4, ref('group_waqf_legal'))]"/>
+        <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        <field name="comment">Akses penuh menyetujui ikrar wakaf, menerbitkan akta, dan mengelola konfigurasi sistem.</field>
+    </record>
+
+    <!-- Multi-company Record Rule for Waqf Pledge -->
+    <record id="waqf_pledge_comp_rule" model="ir.rule">
+        <field name="name">Waqf Pledge Multi-Company</field>
+        <field name="model_id" ref="model_waqf_pledge"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>

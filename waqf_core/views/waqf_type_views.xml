@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_waqf_type_tree" model="ir.ui.view">
+        <field name="name">waqf.type.tree</field>
+        <field name="model">waqf.type</field>
+        <field name="arch" type="xml">
+            <tree string="Jenis Harta Wakaf">
+                <field name="sequence" widget="handle"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="category"/>
+                <field name="active" widget="boolean_toggle"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_waqf_type_form" model="ir.ui.view">
+        <field name="name">waqf.type.form</field>
+        <field name="model">waqf.type</field>
+        <field name="arch" type="xml">
+            <form string="Jenis Harta Wakaf">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" string="Nama Jenis Harta Wakaf"/>
+                        <h1>
+                            <field name="name" placeholder="Misal: Wakaf Uang (Cash Waqf)"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="category"/>
+                        </group>
+                        <group>
+                            <field name="sequence"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+                    <group string="Deskripsi &amp; Ketentuan Syariah">
+                        <field name="description" nolabel="1" placeholder="Rincian dasar hukum syariah dan perundang-undangan..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_waqf_type" model="ir.actions.act_window">
+        <field name="name">Jenis Harta Benda Wakaf</field>
+        <field name="res_model">waqf.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Buat Jenis Harta Wakaf Baru
+            </p>
+            <p>
+                Kelola klasifikasi harta benda wakaf (Benda Tidak Bergerak, Benda Bergerak Uang, dan Benda Bergerak Selain Uang) sesuai UU 41/2004.
+            </p>
+        </field>
+    </record>
+</odoo>

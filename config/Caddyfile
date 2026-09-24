@@ -1,0 +1,68 @@
+# ==============================================================================
+# CADDY REVERSE PROXY CONFIGURATION - WAQF ODOO DOCKER
+# Forum Wakaf Produktif (FWP) - Otomatis SSL Let's Encrypt & WebSocket
+# ==============================================================================
+
+{
+    email {$ACME_EMAIL:admin@fwp.or.id}
+    admin off
+}
+
+# Domain utama yang diambil dari variabel DOMAIN_NAME di .env
+{$DOMAIN_NAME:localhost} {
+    encode gzip zstd
+
+    # Batas ukuran payload request (untuk scan Akta Ikrar Wakaf / berkas legal nazhir)
+    request_body {
+        max_size 100MB
+    }
+
+    # Header keamanan standar industri
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "SAMEORIGIN"
+        X-XSS-Protection "1; mode=block"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        Permissions-Policy "geolocation=(), camera=(), microphone=()"
+        -Server
+    }
+
+    # --------------------------------------------------------------------------
+    # 1. Routing WebSocket Odoo 17 (Port 8072 - gevent/longpolling)
+    # Penting agar chat langsung (discuss), notifikasi real-time tidak putus
+    # --------------------------------------------------------------------------
+    handle /websocket* {
+        reverse_proxy web:8072 {
+            header_up Host {host}
+            header_up X-Real-IP {remote_host}
+            header_up X-Forwarded-For {remote_host}
+            header_up X-Forwarded-Proto {scheme}
+        }
+    }
+
+    # --------------------------------------------------------------------------
+    # 2. Routing Trafik Web Standar Odoo (Port 8069)
+    # Dilengkapi timeout 3600 detik untuk laporan akuntansi PSAK 112 yang berat
+    # --------------------------------------------------------------------------
+    handle {
+        reverse_proxy web:8069 {
+            header_up Host {host}
+            header_up X-Real-IP {remote_host}
+            header_up X-Forwarded-For {remote_host}
+            header_up X-Forwarded-Proto {scheme}
+            transport http {
+                response_header_timeout 3600s
+                read_timeout 3600s
+                write_timeout 3600s
+            }
+        }
+    }
+
+    # Logging ke stdout untuk Docker monitoring
+    log {
+        output stdout
+        format console
+        level INFO
+    }
+}

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit Partner Form View for Wakif Fields -->
+    <record id="view_partner_form_waqf" model="ir.ui.view">
+        <field name="name">res.partner.form.waqf</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <!-- Smart Button in Button Box -->
+            <div name="button_box" position="inside">
+                <button name="action_view_waqf_pledges"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-hand-holding-heart"
+                        invisible="not is_wakif">
+                    <field name="waqf_pledge_count" widget="statinfo" string="Ikrar Wakaf"/>
+                </button>
+            </div>
+
+            <!-- Page for Waqif Details in Notebook -->
+            <notebook position="inside">
+                <page string="Profil Wakif &amp; KYC" name="waqf_profile" invisible="not is_wakif">
+                    <group>
+                        <group string="Klasifikasi &amp; Identitas">
+                            <field name="is_wakif"/>
+                            <field name="wakif_type" required="is_wakif"/>
+                            <field name="nik" invisible="wakif_type != 'individual'"/>
+                            <field name="nib" invisible="wakif_type != 'institution'"/>
+                            <field name="npwp"/>
+                            <field name="total_waqf_amount" widget="monetary"/>
+                        </group>
+                        <group string="Kepatuhan KYC (SKKNI BWI)">
+                            <field name="kyc_status" widget="badge"
+                                   decoration-success="kyc_status == 'verified'"
+                                   decoration-warning="kyc_status == 'unverified'"
+                                   decoration-danger="kyc_status == 'rejected'"/>
+                            <field name="kyc_verified_date"/>
+                            <field name="kyc_verified_by_id"/>
+                            <field name="kyc_notes"/>
+                        </group>
+                    </group>
+                    <div class="mt-2" groups="waqf_core.group_waqf_legal,waqf_core.group_waqf_manager">
+                        <button name="action_verify_kyc"
+                                type="object"
+                                string="Verifikasi KYC Valid"
+                                class="btn-success me-2"
+                                invisible="kyc_status == 'verified'"/>
+                        <button name="action_reject_kyc"
+                                type="object"
+                                string="Tolak / KYC Tidak Sesuai"
+                                class="btn-outline-danger"
+                                invisible="kyc_status == 'rejected'"/>
+                    </div>
+                </page>
+            </notebook>
+        </field>
+    </record>
+
+    <!-- Specific List/Tree View for Wakif -->
+    <record id="view_partner_wakif_tree" model="ir.ui.view">
+        <field name="name">res.partner.wakif.tree</field>
+        <field name="model">res.partner</field>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <tree string="Daftar Wakif">
+                <field name="name" string="Nama Wakif"/>
+                <field name="wakif_type"/>
+                <field name="nik"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <field name="city"/>
+                <field name="kyc_status" widget="badge"
+                       decoration-success="kyc_status == 'verified'"
+                       decoration-warning="kyc_status == 'unverified'"
+                       decoration-danger="kyc_status == 'rejected'"/>
+                <field name="waqf_pledge_count" string="Jumlah AIW"/>
+                <field name="total_waqf_amount" widget="monetary" sum="Total"/>
+                <field name="currency_id" column_invisible="True"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Inherit Partner Filter/Search -->
+    <record id="view_res_partner_filter_waqf" model="ir.ui.view">
+        <field name="name">res.partner.select.waqf</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <filter name="type_person" position="before">
+                <filter string="Wakif" name="filter_is_wakif" domain="[('is_wakif', '=', True)]"/>
+                <filter string="KYC Terverifikasi" name="filter_kyc_verified" domain="[('is_wakif', '=', True), ('kyc_status', '=', 'verified')]"/>
+                <separator/>
+            </filter>
+            <group position="inside">
+                <filter string="Kategori Wakif" name="group_wakif_type" context="{'group_by': 'wakif_type'}"/>
+                <filter string="Status KYC" name="group_kyc_status" context="{'group_by': 'kyc_status'}"/>
+            </group>
+        </field>
+    </record>
+
+    <!-- Window Action: Data Wakif -->
+    <record id="action_waqf_partner" model="ir.actions.act_window">
+        <field name="name">Data Wakif</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('is_wakif', '=', True)]</field>
+        <field name="context">{'default_is_wakif': True, 'search_default_filter_is_wakif': 1}</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('view_partner_wakif_tree')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('base.view_partner_form')})]"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Daftarkan Wakif Baru
+            </p>
+            <p>
+                Kelola master data wakif (individu, lembaga, atau kelompok), informasi KYC, serta riwayat ikrar wakaf.
+            </p>
+        </field>
+    </record>
+</odoo>

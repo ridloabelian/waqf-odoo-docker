@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_psak112_financial_document">
+        <t t-call="web.basic_layout">
+            <t t-foreach="docs" t-as="wizard">
+                <t t-set="report_data" t-value="wizard.get_report_data()"/>
+                <div class="page" style="font-family: Arial, sans-serif; font-size: 11px; color: #333; padding: 20px;">
+                    <!-- Header Organisasi & Laporan -->
+                    <div class="text-center mb-4">
+                        <h4 style="font-weight: bold; margin-bottom: 2px; text-transform: uppercase;">
+                            <span t-field="wizard.company_id.name"/>
+                        </h4>
+                        <div style="font-size: 11px; color: #666; margin-bottom: 8px;">
+                            <span t-field="wizard.company_id.street"/>, <span t-field="wizard.company_id.city"/>
+                        </div>
+                        <h3 style="font-weight: bold; color: #1a5235; text-transform: uppercase; margin-bottom: 2px; border-top: 2px solid #1a5235; border-bottom: 2px solid #1a5235; padding: 6px 0;">
+                            <t t-if="wizard.report_type == 'financial_position'">LAPORAN POSISI KEUANGAN (PSAK 112)</t>
+                            <t t-elif="wizard.report_type == 'asset_detail'">LAPORAN RINCIAN ASET WAKAF (PSAK 112)</t>
+                            <t t-elif="wizard.report_type == 'activity'">LAPORAN AKTIVITAS (PSAK 112)</t>
+                            <t t-elif="wizard.report_type == 'cash_flow'">LAPORAN ARUS KAS (PSAK 112)</t>
+                        </h3>
+                        <div style="font-weight: bold; font-size: 11px; margin-top: 4px;">
+                            <t t-if="wizard.report_type in ('financial_position', 'asset_detail')">
+                                Per Tanggal: <span t-field="wizard.date_to" t-options='{"format": "dd MMMM yyyy"}'/>
+                            </t>
+                            <t t-else="">
+                                Untuk Periode yang Berakhir: <span t-field="wizard.date_from" t-options='{"format": "dd MMMM yyyy"}'/> s/d <span t-field="wizard.date_to" t-options='{"format": "dd MMMM yyyy"}'/>
+                            </t>
+                        </div>
+                        <div style="font-size: 10px; color: #777;">(Disajikan dalam Rupiah, kecuali dinyatakan lain)</div>
+                    </div>
+
+                    <!-- 1. LAPORAN POSISI KEUANGAN -->
+                    <t t-if="wizard.report_type == 'financial_position'">
+                        <t t-set="p" t-value="report_data['position']"/>
+                        <table class="table table-sm table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 70%;">URAIAN AKUN POSISI KEUANGAN</th>
+                                    <th class="text-end" style="width: 30%;">JUMLAH (IDR)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-secondary"><th colspan="2">ASET</th></tr>
+                                <tr>
+                                    <td style="padding-left: 20px;">Kas &amp; Setara Kas Wakaf (LKS-PWU)</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(p['kas_wakaf'])"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 20px;">Piutang Bagi Hasil &amp; Pengelolaan</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(p['piutang'])"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 20px;">Investasi Portofolio Wakaf (Sukuk/CWLS/Saham Syariah)</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(p['investasi'])"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 20px;">Aset Tetap Wakaf - Tanah</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(p['tanah'])"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 20px;">Aset Tetap Wakaf - Bangunan &amp; Sarana Fisik</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(p['bangunan'])"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 20px;">Akumulasi Penyusutan Bangunan</td>
+                                    <td class="text-end">(<span t-esc="wizard.currency_id.format(p['penyusutan'])"/>)</td>
+                                </tr>
+                                <tr style="font-weight: bold; background-color: #e8f5e9;">
+                                    <td>TOTAL ASET WAKAF</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(p['total_aset'])"/></td>
+                                </tr>
+
+                                <tr class="table-secondary"><th colspan="2">LIABILITAS</th></tr>
+                                <tr>
+                                    <td style="padding-left: 20px;">Liabilitas Jangka Pendek Pengelolaan</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(p['liab_pendek'])"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 20px;">Liabilitas Pengembalian Pokok Wakaf Berjangka</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(p['liab_temporer'])"/></td>
+                                </tr>
+                                <tr style="font-weight: bold;">
+                                    <td>TOTAL LIABILITAS</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(p['total_liabilitas'])"/></td>
+                                </tr>
+
+                                <tr class="table-secondary"><th colspan="2">ASET NETO (PSAK 112)</th></tr>
+                                <tr>
+                                    <td style="padding-left: 20px;">Aset Neto Terikat Permanen (Pokok Wakaf Abadi)</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(p['neto_permanen'])"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 20px;">Aset Neto Terikat Temporer (Pokok Wakaf Berjangka)</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(p['neto_temporer'])"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 20px;">Aset Neto Tidak Terikat (Akumulasi Surplus Belum Disalurkan)</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(p['neto_tidak_terikat'])"/></td>
+                                </tr>
+                                <tr style="font-weight: bold; background-color: #e8f5e9;">
+                                    <td>TOTAL ASET NETO</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(p['total_aset_neto'])"/></td>
+                                </tr>
+                                <tr style="font-weight: bold; background-color: #d4edda; font-size: 12px;">
+                                    <td>TOTAL LIABILITAS DAN ASET NETO</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(p['total_liab_neto'])"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </t>
+
+                    <!-- 2. LAPORAN RINCIAN ASET WAKAF -->
+                    <t t-elif="wizard.report_type == 'asset_detail'">
+                        <t t-set="ad" t-value="report_data['asset_detail']"/>
+                        <table class="table table-sm table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 55%;">KATEGORI &amp; OBJEK HARTA BENDA WAKAF</th>
+                                    <th style="width: 20%;">KLASIFIKASI JANGKA WAKTU</th>
+                                    <th class="text-end" style="width: 25%;">NILAI / TAKSIRAN (IDR)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-secondary"><th colspan="3">A. WAKAF UANG (CASH WAQF)</th></tr>
+                                <tr>
+                                    <td style="padding-left: 20px;">Wakaf Uang Abadi / Muabbad</td>
+                                    <td>Permanen</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(ad['cash_permanent'])"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 20px;">Wakaf Uang Berjangka / Muaqqat</td>
+                                    <td>Temporer</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(ad['cash_temporary'])"/></td>
+                                </tr>
+
+                                <tr class="table-secondary"><th colspan="3">B. BENDA TIDAK BERGERAK</th></tr>
+                                <tr>
+                                    <td style="padding-left: 20px;">Tanah Wakaf Bersertifikat</td>
+                                    <td>Permanen</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(ad['immovable_land'])"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 20px;">Bangunan, Masjid, Pesantren &amp; Ruko Produktif</td>
+                                    <td>Permanen</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(ad['immovable_building'])"/></td>
+                                </tr>
+
+                                <tr class="table-secondary"><th colspan="3">C. BENDA BERGERAK SELAIN UANG</th></tr>
+                                <tr>
+                                    <td style="padding-left: 20px;">Kendaraan, Mesin, HAKI &amp; Logam Mulia</td>
+                                    <td>Permanen / Berjangka</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(ad['movable_other'])"/></td>
+                                </tr>
+
+                                <tr style="font-weight: bold; background-color: #d4edda; font-size: 12px;">
+                                    <td colspan="2">TOTAL KELOLAAN HARTA BENDA WAKAF</td>
+                                    <td class="text-end">
+                                        <span t-esc="wizard.currency_id.format(ad['cash_permanent'] + ad['cash_temporary'] + ad['immovable_land'] + ad['immovable_building'] + ad['movable_other'])"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </t>
+
+                    <!-- 3. LAPORAN AKTIVITAS -->
+                    <t t-elif="wizard.report_type == 'activity'">
+                        <t t-set="act" t-value="report_data['activity']"/>
+                        <table class="table table-sm table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 70%;">URAIAN PENERIMAAN &amp; PENYALURAN</th>
+                                    <th class="text-end" style="width: 30%;">JUMLAH (IDR)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-secondary"><th colspan="2">PENERIMAAN WAKAF &amp; HASIL PENGELOLAAN</th></tr>
+                                <tr>
+                                    <td style="padding-left: 20px;">Penerimaan Wakaf Uang Permanen</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(act['terima_permanen'])"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 20px;">Penerimaan Wakaf Uang Temporer</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(act['terima_temporer'])"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 20px;">Penerimaan Wakaf Harta Benda Selain Uang</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(act['terima_nonkas'])"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 20px;">Hasil Pengelolaan &amp; Pengembangan Wakaf Produktif</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(act['hasil_kelola'])"/></td>
+                                </tr>
+                                <tr style="font-weight: bold; background-color: #e8f5e9;">
+                                    <td>TOTAL PENERIMAAN</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(act['total_penerimaan'])"/></td>
+                                </tr>
+
+                                <tr class="table-secondary"><th colspan="2">PENGELUARAN &amp; PENYALURAN</th></tr>
+                                <tr>
+                                    <td style="padding-left: 20px;">Bagian Hak Imbalan Nazhir (Maks 10% UU 41/2004)</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(act['hak_nazhir'])"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 20px;">Beban Operasional Pengelolaan &amp; Pemeliharaan Aset</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(act['beban_kelola'])"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 20px;">Penyaluran Manfaat Wakaf kepada Mauquf 'Alaih</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(act['beban_salur'])"/></td>
+                                </tr>
+                                <tr style="font-weight: bold; background-color: #ffebee;">
+                                    <td>TOTAL PENGELUARAN &amp; PENYALURAN</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(act['total_beban'])"/></td>
+                                </tr>
+
+                                <tr style="font-weight: bold; background-color: #d4edda; font-size: 12px;">
+                                    <td>KENAIKAN (PENURUNAN) ASET NETO PERIODE BERJALAN</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(act['surplus_periode'])"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </t>
+
+                    <!-- 4. LAPORAN ARUS KAS -->
+                    <t t-elif="wizard.report_type == 'cash_flow'">
+                        <t t-set="cf" t-value="report_data['cash_flow']"/>
+                        <table class="table table-sm table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 70%;">ARUS KAS DARI AKTIVITAS</th>
+                                    <th class="text-end" style="width: 30%;">JUMLAH (IDR)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-secondary"><th colspan="2">ARUS KAS DARI AKTIVITAS OPERASI &amp; PENYALURAN</th></tr>
+                                <tr>
+                                    <td style="padding-left: 20px;">Kas Diterima dari Hasil Pengelolaan Wakaf Produktif</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(cf['kas_hasil_kelola'])"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 20px;">Kas Disalurkan untuk Manfaat Wakaf (Mauquf 'Alaih)</td>
+                                    <td class="text-end">(<span t-esc="wizard.currency_id.format(cf['kas_salur'])"/>)</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 20px;">Kas Dibayarkan untuk Hak Nazhir &amp; Operasional</td>
+                                    <td class="text-end">(<span t-esc="wizard.currency_id.format(cf['kas_hak_nazhir'] + cf['kas_beban_kelola'])"/>)</td>
+                                </tr>
+                                <tr style="font-weight: bold;">
+                                    <td>Arus Kas Bersih dari Aktivitas Operasi</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(cf['arus_kas_operasi'])"/></td>
+                                </tr>
+
+                                <tr class="table-secondary"><th colspan="2">ARUS KAS DARI PENERIMAAN POKOK WAKAF</th></tr>
+                                <tr>
+                                    <td style="padding-left: 20px;">Penerimaan Kas Pokok Wakaf Permanen</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(cf['kas_terima_permanen'])"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-left: 20px;">Penerimaan Kas Pokok Wakaf Temporer</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(cf['kas_terima_temporer'])"/></td>
+                                </tr>
+                                <tr style="font-weight: bold;">
+                                    <td>Arus Kas Bersih dari Penerimaan Pokok Wakaf</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(cf['arus_kas_wakaf'])"/></td>
+                                </tr>
+
+                                <tr style="font-weight: bold; background-color: #e8f5e9;">
+                                    <td>KENAIKAN (PENURUNAN) BERSIH KAS DAN SETARA KAS</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(cf['kenaikan_bersih_kas'])"/></td>
+                                </tr>
+                                <tr>
+                                    <td>SALDO KAS DAN SETARA KAS AWAL PERIODE</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(cf['saldo_awal_kas'])"/></td>
+                                </tr>
+                                <tr style="font-weight: bold; background-color: #d4edda; font-size: 12px;">
+                                    <td>SALDO KAS DAN SETARA KAS AKHIR PERIODE</td>
+                                    <td class="text-end"><span t-esc="wizard.currency_id.format(cf['saldo_akhir_kas'])"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </t>
+
+                    <!-- Tanda Tangan Pengesahan -->
+                    <div class="row text-center mt-5" style="font-size: 11px;">
+                        <div class="col-6">
+                            <div>Mengetahui,</div>
+                            <div><strong>Pimpinan Nazhir</strong></div>
+                            <div style="height: 60px;"></div>
+                            <div><u>...................................................</u></div>
+                            <div>Ketua / Direktur Eksekutif</div>
+                        </div>
+                        <div class="col-6">
+                            <div>Disiapkan oleh,</div>
+                            <div><strong>Bagian Keuangan &amp; Akuntansi</strong></div>
+                            <div style="height: 60px;"></div>
+                            <div><u>...................................................</u></div>
+                            <div>Manajer Keuangan Syariah</div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

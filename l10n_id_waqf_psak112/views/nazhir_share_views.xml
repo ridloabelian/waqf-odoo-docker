@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_waqf_nazhir_share_form" model="ir.ui.view">
+        <field name="name">waqf.nazhir.share.form</field>
+        <field name="model">waqf.nazhir.share</field>
+        <field name="arch" type="xml">
+            <form string="Perhitungan Hak Nazhir (UU 41/2004)">
+                <header>
+                    <button name="action_fetch_financial_data"
+                            type="object"
+                            string="1. Hitung Hasil Pengelolaan"
+                            class="oe_highlight btn-info"
+                            invisible="state not in ('draft', 'calculated')"/>
+
+                    <button name="action_verify"
+                            type="object"
+                            string="2. Verifikasi Kepatuhan Syariah &amp; UU 41/2004"
+                            class="oe_highlight btn-primary"
+                            invisible="state != 'calculated'"/>
+
+                    <button name="action_post_journal"
+                            type="object"
+                            string="3. Posting Entri Jurnal"
+                            class="oe_highlight btn-success"
+                            invisible="state != 'verified'"/>
+
+                    <button name="action_draft"
+                            type="object"
+                            string="Kembalikan ke Draf"
+                            invisible="state in ('draft', 'posted')"/>
+
+                    <button name="action_cancel"
+                            type="object"
+                            string="Batalkan"
+                            invisible="state in ('posted', 'cancel')"/>
+
+                    <field name="state" widget="statusbar" statusbar_visible="draft,calculated,verified,posted"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" string="Nomor Perhitungan"/>
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Periode &amp; Nazhir">
+                            <field name="date_from" readonly="state != 'draft'"/>
+                            <field name="date_to" readonly="state != 'draft'"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group string="Hasil Pengelolaan Periode Berjalan">
+                            <field name="gross_yield" widget="monetary" readonly="state != 'draft'"/>
+                            <field name="direct_expenses" widget="monetary" readonly="state != 'draft'"/>
+                            <field name="net_yield" widget="monetary" class="oe_subtotal_footer_separator"/>
+                        </group>
+                    </group>
+
+                    <group string="Batasan &amp; Alokasi Hak Nazhir (Regulasi UU No. 41 Tahun 2004 Pasal 12)">
+                        <group>
+                            <field name="max_nazhir_percentage"/>
+                            <field name="max_allowed_nazhir_share" widget="monetary"/>
+                        </group>
+                        <group>
+                            <field name="actual_nazhir_share" widget="monetary" readonly="state in ('posted', 'cancel')"/>
+                            <field name="actual_percentage" widget="progressbar"/>
+                            <field name="surplus_for_mauquf_alaih" widget="monetary" class="oe_subtotal_footer_separator"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Konfigurasi Penjurnalan Otomatis" name="accounting_config">
+                            <group>
+                                <group>
+                                    <field name="journal_id" readonly="state == 'posted'"/>
+                                    <field name="nazhir_expense_account_id" readonly="state == 'posted'"/>
+                                    <field name="nazhir_payable_account_id" readonly="state == 'posted'"/>
+                                </group>
+                                <group>
+                                    <field name="move_id" readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Catatan &amp; Telaah Kepatuhan" name="compliance_notes">
+                            <field name="notes" placeholder="Catatan komite syariah atau audit internal terkait kepatuhan alokasi hak nazhir..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_waqf_nazhir_share_tree" model="ir.ui.view">
+        <field name="name">waqf.nazhir.share.tree</field>
+        <field name="model">waqf.nazhir.share</field>
+        <field name="arch" type="xml">
+            <tree string="Perhitungan Hak Nazhir">
+                <field name="name"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="net_yield" widget="monetary"/>
+                <field name="max_allowed_nazhir_share" widget="monetary"/>
+                <field name="actual_nazhir_share" widget="monetary"/>
+                <field name="actual_percentage"/>
+                <field name="surplus_for_mauquf_alaih" widget="monetary"/>
+                <field name="currency_id" column_invisible="True"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-warning="state in ('calculated', 'verified')"
+                       decoration-success="state == 'posted'"
+                       decoration-danger="state == 'cancel'"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_waqf_nazhir_share_search" model="ir.ui.view">
+        <field name="name">waqf.nazhir.share.search</field>
+        <field name="model">waqf.nazhir.share</field>
+        <field name="arch" type="xml">
+            <search string="Pencarian Perhitungan Hak Nazhir">
+                <field name="name"/>
+                <filter string="Draf" name="filter_draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Diverifikasi" name="filter_verified" domain="[('state', '=', 'verified')]"/>
+                <filter string="Dijurnal" name="filter_posted" domain="[('state', '=', 'posted')]"/>
+                <group expand="0" string="Kelompokkan Berdasarkan">
+                    <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Periode Akhir" name="group_date_to" context="{'group_by': 'date_to:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_waqf_nazhir_share" model="ir.actions.act_window">
+        <field name="name">Perhitungan Hak Nazhir (UU 41/2004)</field>
+        <field name="res_model">waqf.nazhir.share</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_waqf_nazhir_share_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Buat Perhitungan Hak Nazhir Baru
+            </p>
+            <p>
+                Hitung surplus hasil bersih pengelolaan wakaf produktif dan pastikan alokasi hak operasional nazhir tidak melampaui batas maksimal 10% sesuai ketentuan UU No. 41 Tahun 2004 Pasal 12.
+            </p>
+        </field>
+    </record>
+</odoo>

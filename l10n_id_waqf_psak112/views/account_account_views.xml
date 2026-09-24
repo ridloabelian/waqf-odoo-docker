@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_form_waqf_psak112" model="ir.ui.view">
+        <field name="name">account.account.form.waqf.psak112</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet//group[1]" position="after">
+                <group string="Standar Akuntansi Wakaf (PSAK 112)">
+                    <group>
+                        <field name="is_waqf_account"/>
+                        <field name="waqf_net_asset_type" invisible="not is_waqf_account"/>
+                    </group>
+                    <group>
+                        <field name="psak112_category" invisible="not is_waqf_account"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_account_search_waqf_psak112" model="ir.ui.view">
+        <field name="name">account.account.search.waqf.psak112</field>
+        <field name="model">account.account</field>
+        <field name="inherit_id" ref="account.view_account_search"/>
+        <field name="arch" type="xml">
+            <filter name="account_type" position="before">
+                <filter string="Akun PSAK 112" name="filter_waqf_account" domain="[('is_waqf_account', '=', True)]"/>
+                <filter string="Aset Neto Permanen (Pokok Abadi)" name="filter_neto_permanent" domain="[('waqf_net_asset_type', '=', 'permanent')]"/>
+                <filter string="Aset Neto Temporer (Berjangka)" name="filter_neto_temporary" domain="[('waqf_net_asset_type', '=', 'temporary')]"/>
+                <filter string="Aset Neto Tidak Terikat (Surplus)" name="filter_neto_unrestricted" domain="[('waqf_net_asset_type', '=', 'unrestricted')]"/>
+                <separator/>
+            </filter>
+            <group position="inside">
+                <filter string="Klasifikasi Aset Neto" name="group_net_asset" context="{'group_by': 'waqf_net_asset_type'}"/>
+                <filter string="Kategori PSAK 112" name="group_psak112_category" context="{'group_by': 'psak112_category'}"/>
+            </group>
+        </field>
+    </record>
+
+    <!-- Dedicated Action for PSAK 112 Chart of Accounts -->
+    <record id="action_waqf_account_psak112" model="ir.actions.act_window">
+        <field name="name">Bagan Akun Standar PSAK 112</field>
+        <field name="res_model">account.account</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('is_waqf_account', '=', True)]</field>
+        <field name="context">{'search_default_filter_waqf_account': 1, 'default_is_waqf_account': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Bagan Akun Standar Akuntansi Wakaf (PSAK 112)
+            </p>
+            <p>
+                Kelola klasifikasi akun aset neto (Terikat Permanen, Terikat Temporer, Tidak Terikat) dan kategori pelaporan keuangan wakaf.
+            </p>
+        </field>
+    </record>
+</odoo>

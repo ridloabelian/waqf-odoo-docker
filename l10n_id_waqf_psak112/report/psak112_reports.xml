@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_psak112_document" model="ir.actions.report">
+        <field name="name">Laporan Keuangan PSAK 112</field>
+        <field name="model">waqf.psak112.report.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">l10n_id_waqf_psak112.report_psak112_financial_document</field>
+        <field name="report_file">l10n_id_waqf_psak112.report_psak112_financial_document</field>
+        <field name="print_report_name">'Laporan_PSAK112_' + object.report_type</field>
+        <field name="binding_model_id" ref="model_waqf_psak112_report_wizard"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

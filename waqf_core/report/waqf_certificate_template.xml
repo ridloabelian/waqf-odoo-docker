@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_waqf_certificate_document">
+        <t t-call="web.basic_layout">
+            <t t-foreach="docs" t-as="o">
+                <div class="page" style="font-family: 'Times New Roman', Times, serif; color: #2c3e50; padding: 25px; border: 4px double #1a5235; border-radius: 8px;">
+                    <!-- Islamic Header & Bismillah -->
+                    <div class="text-center mb-4">
+                        <div style="font-size: 24px; font-weight: bold; color: #1a5235; margin-bottom: 5px;">
+                            بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+                        </div>
+                        <div style="font-size: 13px; font-style: italic; color: #555;">
+                            "Kamu sekali-kali tidak sampai kepada kebajikan (yang sempurna), sebelum kamu menafkahkan sebahagian harta yang kamu cintai." (QS. Ali Imran: 92)
+                        </div>
+                        <hr style="border-top: 2px solid #1a5235; margin-top: 15px; margin-bottom: 10px;"/>
+                        <h2 style="font-weight: bold; text-transform: uppercase; color: #1a5235; letter-spacing: 2px; margin-bottom: 2px;">
+                            SERTIFIKAT IKRAR WAKAF
+                        </h2>
+                        <div style="font-size: 14px; font-weight: bold;">
+                            Nomor Akta: <span t-esc="o.document_number or '-'"/> | Registrasi: <span t-field="o.name"/>
+                        </div>
+                        <div style="font-size: 12px; color: #666;">
+                            Berdasarkan UU RI No. 41 Tahun 2004 tentang Wakaf &amp; Standar Badan Wakaf Indonesia (BWI)
+                        </div>
+                    </div>
+
+                    <!-- Preamble -->
+                    <p style="text-align: justify; font-size: 13px; line-height: 1.6; margin-bottom: 15px;">
+                        Pada hari ini <strong><span t-field="o.date_pledge" t-options='{"format": "dd MMMM yyyy"}'/></strong>, telah tercatat dalam sistem administrasi perwakafan bahwa pihak yang bertanda tangan di bawah ini secara sah, sadar, dan ikhlas karena Allah SWT telah mewakafkan harta bendanya:
+                    </p>
+
+                    <!-- Details Table -->
+                    <table class="table table-sm table-bordered" style="font-size: 12px; margin-bottom: 15px;">
+                        <tbody>
+                            <tr style="background-color: #f4f9f4;">
+                                <th colspan="2" style="color: #1a5235; font-weight: bold; text-transform: uppercase;">
+                                    I. IDENTITAS WAKIF (PEMBERI WAKAF)
+                                </th>
+                            </tr>
+                            <tr>
+                                <td style="width: 30%; font-weight: bold;">Nama Wakif</td>
+                                <td><span t-field="o.partner_id.name"/> (<span t-field="o.partner_id.wakif_type"/>)</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">NIK / NIB / NPWP</td>
+                                <td>
+                                    <span t-esc="o.partner_id.nik or o.partner_id.nib or o.partner_id.npwp or '-'"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Alamat / Kontak</td>
+                                <td>
+                                    <span t-esc="o.partner_id.contact_address or '-'"/> | Telp: <span t-esc="o.partner_id.phone or '-'"/>
+                                </td>
+                            </tr>
+
+                            <tr style="background-color: #f4f9f4;">
+                                <th colspan="2" style="color: #1a5235; font-weight: bold; text-transform: uppercase;">
+                                    II. HARTA BENDA WAKAF (MAUQUF BIH)
+                                </th>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Jenis Harta Wakaf</td>
+                                <td><span t-field="o.waqf_type_id.name"/> (<span t-field="o.waqf_category"/>)</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Sifat Jangka Waktu</td>
+                                <td>
+                                    <strong><span t-field="o.waqf_nature"/></strong>
+                                    <t t-if="o.waqf_nature == 'temporary'">
+                                        (Jangka Waktu: <span t-field="o.period_years"/> Tahun, Pengembalian: <span t-field="o.return_date" t-options='{"format": "dd MMMM yyyy"}'/>)
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Nilai / Taksiran Harta</td>
+                                <td>
+                                    <span style="font-size: 14px; font-weight: bold; color: #1a5235;" t-field="o.total_asset_value"/>
+                                </td>
+                            </tr>
+                            <tr t-if="o.asset_description or o.asset_location">
+                                <td style="font-weight: bold;">Rincian &amp; Lokasi Aset</td>
+                                <td>
+                                    <div><span t-field="o.asset_description"/></div>
+                                    <div t-if="o.asset_location"><small>Lokasi: <span t-field="o.asset_location"/></small></div>
+                                    <div t-if="o.land_certificate_number">
+                                        <small>Bukti Kepemilikan: <span t-field="o.land_certificate_type"/> No. <span t-field="o.land_certificate_number"/></small>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr style="background-color: #f4f9f4;">
+                                <th colspan="2" style="color: #1a5235; font-weight: bold; text-transform: uppercase;">
+                                    III. PERUNTUKAN WAKAF (MAUQUF 'ALAIH) &amp; NAZHIR
+                                </th>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Tujuan Peruntukan</td>
+                                <td><span t-field="o.allotment_purpose"/></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Nazhir Penerima Amanah</td>
+                                <td>
+                                    <strong><span t-field="o.nazhir_id.name"/></strong>
+                                    <t t-if="o.nazhir_registration_number">
+                                        (Reg. BWI: <span t-field="o.nazhir_registration_number"/>)
+                                    </t>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Closing Statement -->
+                    <p style="text-align: justify; font-size: 12px; line-height: 1.5; margin-bottom: 25px;">
+                        Harta benda wakaf tersebut di atas sejak diikrarkannya telah beralih status kepemilikannya menjadi hak milik Allah SWT untuk dimanfaatkan sebesar-besarnya bagi kemaslahatan umat sesuai dengan ketentuan syariat Islam dan perundang-undangan yang berlaku di Negara Kesatuan Republik Indonesia.
+                    </p>
+
+                    <!-- Signature Blocks -->
+                    <div class="row text-center" style="font-size: 11px; margin-top: 20px;">
+                        <div class="col-4">
+                            <div>Wakif (Pemberi Wakaf),</div>
+                            <div style="height: 60px;"></div>
+                            <div><strong><u><span t-field="o.partner_id.name"/></u></strong></div>
+                        </div>
+                        <div class="col-4">
+                            <div>PPAIW / KUA,</div>
+                            <div style="height: 60px;"></div>
+                            <div><strong><u><span t-esc="o.ppaiw_name or '.......................................'"/></u></strong></div>
+                            <div><span t-esc="o.ppaiw_position or 'Pejabat Pembuat AIW'"/></div>
+                        </div>
+                        <div class="col-4">
+                            <div>Pimpinan Nazhir,</div>
+                            <div style="height: 60px;"></div>
+                            <div><strong><u><span t-field="o.nazhir_id.name"/></u></strong></div>
+                            <div>Penerima Amanah</div>
+                        </div>
+                    </div>
+
+                    <div class="row text-center mt-4" style="font-size: 11px;">
+                        <div class="col-6">
+                            <div>Saksi I,</div>
+                            <div style="height: 45px;"></div>
+                            <div><strong><u><span t-esc="o.witness_1_name or '.......................................'"/></u></strong></div>
+                            <div t-if="o.witness_1_nik"><small>NIK: <span t-field="o.witness_1_nik"/></small></div>
+                        </div>
+                        <div class="col-6">
+                            <div>Saksi II,</div>
+                            <div style="height: 45px;"></div>
+                            <div><strong><u><span t-esc="o.witness_2_name or '.......................................'"/></u></strong></div>
+                            <div t-if="o.witness_2_nik"><small>NIK: <span t-field="o.witness_2_nik"/></small></div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

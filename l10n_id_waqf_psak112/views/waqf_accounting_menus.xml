@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Category: Akuntansi PSAK 112 under Pengelolaan Wakaf Root -->
+    <menuitem id="menu_waqf_accounting_psak112"
+              name="Akuntansi PSAK 112"
+              parent="waqf_core.menu_waqf_root"
+              sequence="20"/>
+
+    <!-- Submenu: Perhitungan Hak Nazhir -->
+    <menuitem id="menu_waqf_nazhir_share"
+              name="Hak Nazhir (Maks 10% UU 41/2004)"
+              parent="menu_waqf_accounting_psak112"
+              action="action_waqf_nazhir_share"
+              sequence="10"/>
+
+    <!-- Submenu: 4 Laporan Wajib PSAK 112 -->
+    <menuitem id="menu_waqf_psak112_reports"
+              name="4 Laporan Keuangan PSAK 112"
+              parent="menu_waqf_accounting_psak112"
+              action="action_waqf_psak112_report_wizard"
+              sequence="20"/>
+
+    <!-- Submenu: Bagan Akun PSAK 112 -->
+    <menuitem id="menu_waqf_account_psak112"
+              name="Bagan Akun PSAK 112"
+              parent="waqf_core.menu_waqf_configuration"
+              action="action_waqf_account_psak112"
+              sequence="20"/>
+</odoo>

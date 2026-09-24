@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_waqf_type_user,waqf.type.user,model_waqf_type,group_waqf_user,1,0,0,0
+access_waqf_type_manager,waqf.type.manager,model_waqf_type,group_waqf_manager,1,1,1,1
+access_waqf_pledge_user,waqf.pledge.user,model_waqf_pledge,group_waqf_user,1,1,1,0
+access_waqf_pledge_legal,waqf.pledge.legal,model_waqf_pledge,group_waqf_legal,1,1,1,0
+access_waqf_pledge_manager,waqf.pledge.manager,model_waqf_pledge,group_waqf_manager,1,1,1,1

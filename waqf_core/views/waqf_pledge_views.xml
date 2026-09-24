@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form View: Waqf Pledge (AIW / APAIW) -->
+    <record id="view_waqf_pledge_form" model="ir.ui.view">
+        <field name="name">waqf.pledge.form</field>
+        <field name="model">waqf.pledge</field>
+        <field name="arch" type="xml">
+            <form string="Akta Ikrar Wakaf (AIW)">
+                <header>
+                    <button name="action_verify_legal"
+                            type="object"
+                            string="Verifikasi Legalitas"
+                            class="oe_highlight btn-info"
+                            invisible="state != 'draft'"
+                            groups="waqf_core.group_waqf_legal,waqf_core.group_waqf_manager"/>
+
+                    <button name="action_approve_nazhir"
+                            type="object"
+                            string="Persetujuan Pimpinan Nazhir"
+                            class="oe_highlight btn-primary"
+                            invisible="state != 'verified_legal'"
+                            groups="waqf_core.group_waqf_manager"/>
+
+                    <button name="action_issue_aiw"
+                            type="object"
+                            string="Terbitkan AIW / APAIW"
+                            class="oe_highlight btn-success"
+                            invisible="state != 'approved_nazhir'"
+                            groups="waqf_core.group_waqf_manager"/>
+
+                    <button name="action_cancel"
+                            type="object"
+                            string="Batalkan"
+                            invisible="state in ('issued', 'cancel')"/>
+
+                    <button name="action_draft"
+                            type="object"
+                            string="Kembalikan ke Draf"
+                            invisible="state != 'cancel'"/>
+
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,verified_legal,approved_nazhir,issued"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" title="AIW Terbit" bg_color="text-bg-success" invisible="state != 'issued'"/>
+                    <widget name="web_ribbon" title="Dibatalkan" bg_color="text-bg-danger" invisible="state != 'cancel'"/>
+
+                    <div class="oe_title">
+                        <label for="name" string="Nomor Registrasi"/>
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Data Akta Ikrar Wakaf">
+                            <field name="pledge_type" readonly="state != 'draft'"/>
+                            <field name="document_number" placeholder="Nomor Resmi AIW/APAIW dari KUA"/>
+                            <field name="date_pledge" readonly="state != 'draft'"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group string="Para Pihak (Wakif &amp; Nazhir)">
+                            <field name="partner_id"
+                                   options="{'no_quick_create': True}"
+                                   readonly="state != 'draft'"/>
+                            <field name="wakif_nik"/>
+                            <field name="wakif_phone"/>
+                            <field name="nazhir_id" readonly="state not in ('draft', 'verified_legal')"/>
+                            <field name="nazhir_registration_number"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <!-- Tab 1: Harta Benda Wakaf & Peruntukan -->
+                        <page string="Harta Benda Wakaf (Mauquf Bih)" name="asset_details">
+                            <group>
+                                <group string="Klasifikasi Objek Wakaf">
+                                    <field name="waqf_type_id" options="{'no_create': True}" readonly="state != 'draft'"/>
+                                    <field name="waqf_category"/>
+                                    <field name="waqf_nature" widget="radio" options="{'horizontal': true}" readonly="state != 'draft'"/>
+                                </group>
+                                <group string="Nilai &amp; Finansial">
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="amount_nominal"
+                                           widget="monetary"
+                                           invisible="waqf_category != 'movable_cash'"
+                                           required="waqf_category == 'movable_cash'"
+                                           readonly="state != 'draft'"/>
+                                    <field name="estimated_value"
+                                           widget="monetary"
+                                           invisible="waqf_category == 'movable_cash'"
+                                           readonly="state != 'draft'"/>
+                                    <field name="total_asset_value" widget="monetary" class="oe_subtotal_footer_separator"/>
+                                </group>
+                            </group>
+
+                            <group string="Peruntukan Wakaf (Mauquf 'Alaih) Sesuai Ikrar">
+                                <field name="allotment_purpose"
+                                       nolabel="1"
+                                       placeholder="Peruntukan hasil atau pemanfaatan wakaf (misal: beasiswa yatim, fasilitas kesehatan dhuafa, pengembangan dakwah)..."
+                                       readonly="state != 'draft'"/>
+                            </group>
+
+                            <group string="Spesifikasi &amp; Legalitas Fisik (Tanah / Gedung / Benda Lain)"
+                                   invisible="waqf_category == 'movable_cash'">
+                                <group>
+                                    <field name="land_certificate_type" invisible="waqf_category != 'immovable'"/>
+                                    <field name="land_certificate_number" invisible="waqf_category != 'immovable'"/>
+                                    <field name="land_area_m2" invisible="waqf_category != 'immovable'"/>
+                                    <field name="building_area_m2" invisible="waqf_category != 'immovable'"/>
+                                </group>
+                                <group>
+                                    <field name="asset_location" placeholder="Alamat lengkap, batas utara/timur/selatan/barat..."/>
+                                    <field name="asset_description" placeholder="Rincian teknis, spesifikasi, nomor mesin/rangka, dsb..."/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- Tab 2: Ketentuan Wakaf Berjangka -->
+                        <page string="Ketentuan Wakaf Berjangka" name="temporary_rules" invisible="waqf_nature != 'temporary'">
+                            <group>
+                                <group string="Masa Berlaku">
+                                    <field name="period_years" required="waqf_nature == 'temporary'" readonly="state != 'draft'"/>
+                                    <field name="return_date" required="waqf_nature == 'temporary'" readonly="state != 'draft'"/>
+                                </group>
+                                <group string="Pengembalian Pokok">
+                                    <field name="beneficiary_reversion" readonly="state != 'draft'"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- Tab 3: Pejabat PPAIW & Saksi -->
+                        <page string="PPAIW &amp; Saksi-Saksi" name="ppaiw_witness">
+                            <group>
+                                <group string="Pejabat Pembuat AIW (PPAIW)">
+                                    <field name="ppaiw_name" placeholder="Nama Kepala KUA / Notaris PPAIW"/>
+                                    <field name="ppaiw_position" placeholder="Kepala KUA Kecamatan ..."/>
+                                    <field name="ppaiw_sk_number" placeholder="Nomor SK Pengangkatan PPAIW"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group string="Saksi I">
+                                    <field name="witness_1_name"/>
+                                    <field name="witness_1_nik"/>
+                                    <field name="witness_1_address"/>
+                                </group>
+                                <group string="Saksi II">
+                                    <field name="witness_2_name"/>
+                                    <field name="witness_2_nik"/>
+                                    <field name="witness_2_address"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- Tab 4: Audit & Log Verifikasi -->
+                        <page string="Verifikasi &amp; Legalitas" name="audit_log">
+                            <group>
+                                <group string="Verifikasi Legalitas">
+                                    <field name="legal_verifier_id"/>
+                                    <field name="legal_verified_date"/>
+                                    <field name="legal_notes" placeholder="Catatan keabsahan dokumen kepemilikan dan persyaratan wakaf..."/>
+                                </group>
+                                <group string="Persetujuan &amp; Penerbitan">
+                                    <field name="nazhir_approver_id"/>
+                                    <field name="nazhir_approved_date"/>
+                                    <field name="issued_date"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+
+                <!-- Mail Chatter -->
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree / List View: Waqf Pledge -->
+    <record id="view_waqf_pledge_tree" model="ir.ui.view">
+        <field name="name">waqf.pledge.tree</field>
+        <field name="model">waqf.pledge</field>
+        <field name="arch" type="xml">
+            <tree string="Daftar Akta Ikrar Wakaf (AIW)"
+                  decoration-info="state == 'draft'"
+                  decoration-warning="state in ('verified_legal', 'approved_nazhir')"
+                  decoration-success="state == 'issued'"
+                  decoration-muted="state == 'cancel'">
+                <field name="name"/>
+                <field name="document_number"/>
+                <field name="date_pledge"/>
+                <field name="partner_id" string="Wakif"/>
+                <field name="waqf_type_id"/>
+                <field name="waqf_nature" widget="badge"
+                       decoration-primary="waqf_nature == 'perpetual'"
+                       decoration-warning="waqf_nature == 'temporary'"/>
+                <field name="total_asset_value" widget="monetary" sum="Total Nilai Wakaf"/>
+                <field name="currency_id" column_invisible="True"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-warning="state == 'verified_legal'"
+                       decoration-primary="state == 'approved_nazhir'"
+                       decoration-success="state == 'issued'"
+                       decoration-danger="state == 'cancel'"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Search View: Waqf Pledge -->
+    <record id="view_waqf_pledge_search" model="ir.ui.view">
+        <field name="name">waqf.pledge.search</field>
+        <field name="model">waqf.pledge</field>
+        <field name="arch" type="xml">
+            <search string="Pencarian Ikrar Wakaf">
+                <field name="name" string="Nomor Registrasi / AIW"
+                       filter_domain="['|', ('name', 'ilike', self), ('document_number', 'ilike', self)]"/>
+                <field name="partner_id" string="Nama Wakif"/>
+                <field name="document_number"/>
+                <field name="waqf_type_id"/>
+
+                <filter string="Draf" name="filter_draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Verifikasi Legalitas" name="filter_verified_legal" domain="[('state', '=', 'verified_legal')]"/>
+                <filter string="Disetujui Nazhir" name="filter_approved_nazhir" domain="[('state', '=', 'approved_nazhir')]"/>
+                <filter string="AIW Terbit" name="filter_issued" domain="[('state', '=', 'issued')]"/>
+                <separator/>
+                <filter string="Wakaf Abadi (Permanen)" name="filter_perpetual" domain="[('waqf_nature', '=', 'perpetual')]"/>
+                <filter string="Wakaf Berjangka (Temporer)" name="filter_temporary" domain="[('waqf_nature', '=', 'temporary')]"/>
+                <separator/>
+                <filter string="Wakaf Uang" name="filter_cash" domain="[('waqf_category', '=', 'movable_cash')]"/>
+                <filter string="Aset Tidak Bergerak (Tanah/Gedung)" name="filter_immovable" domain="[('waqf_category', '=', 'immovable')]"/>
+
+                <group expand="0" string="Kelompokkan Berdasarkan">
+                    <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Wakif" name="group_partner" context="{'group_by': 'partner_id'}"/>
+                    <filter string="Jenis Harta Wakaf" name="group_type" context="{'group_by': 'waqf_type_id'}"/>
+                    <filter string="Sifat Jangka Waktu" name="group_nature" context="{'group_by': 'waqf_nature'}"/>
+                    <filter string="Tanggal Ikrar" name="group_date" context="{'group_by': 'date_pledge:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Window Action: Waqf Pledge -->
+    <record id="action_waqf_pledge" model="ir.actions.act_window">
+        <field name="name">Ikrar Wakaf (AIW / APAIW)</field>
+        <field name="res_model">waqf.pledge</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_waqf_pledge_search"/>
+        <field name="context">{'search_default_filter_issued': 0}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Buat Akta Ikrar Wakaf (AIW) Baru
+            </p>
+            <p>
+                Catat penerimaan harta benda wakaf dari wakif, proses verifikasi legalitas, hingga penerbitan Akta Ikrar Wakaf resmi standar BWI.
+            </p>
+        </field>
+    </record>
+</odoo>
