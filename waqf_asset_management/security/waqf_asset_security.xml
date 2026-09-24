@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Multi-company Rules for Waqf Asset -->
+    <record id="waqf_asset_comp_rule" model="ir.rule">
+        <field name="name">Waqf Asset Multi-Company</field>
+        <field name="model_id" ref="model_waqf_asset"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <!-- Multi-company Rules for Waqf Asset Inspection -->
+    <record id="waqf_asset_inspection_comp_rule" model="ir.rule">
+        <field name="name">Waqf Asset Inspection Multi-Company</field>
+        <field name="model_id" ref="model_waqf_asset_inspection"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>

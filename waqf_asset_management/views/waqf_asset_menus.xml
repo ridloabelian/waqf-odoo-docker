@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Parent Menu: Penjagaan Aset Fisik (di bawah menu_waqf_root dari waqf_core) -->
+    <menuitem id="menu_waqf_asset_root"
+              name="Penjagaan Aset (Fisik)"
+              parent="waqf_core.menu_waqf_root"
+              sequence="30"/>
+
+    <!-- Submenu: Master Inventaris Aset Fisik -->
+    <menuitem id="menu_waqf_asset_act"
+              name="Inventaris Tanah &amp; Gedung"
+              parent="menu_waqf_asset_root"
+              action="action_waqf_asset"
+              sequence="10"/>
+
+    <!-- Submenu: Inspeksi Lapangan & Pemeliharaan -->
+    <menuitem id="menu_waqf_asset_inspection_act"
+              name="Inspeksi &amp; Pemeliharaan"
+              parent="menu_waqf_asset_root"
+              action="action_waqf_asset_inspection"
+              sequence="20"/>
+</odoo>

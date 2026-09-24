@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_waqf_asset_registry_document">
+        <t t-call="web.basic_layout">
+            <t t-foreach="docs" t-as="o">
+                <div class="page" style="font-family: 'Times New Roman', Times, serif; color: #2c3e50; padding: 25px; border: 3px double #1a5235; border-radius: 6px;">
+                    <!-- Islamic & Official Header -->
+                    <div class="text-center mb-3">
+                        <div style="font-size: 22px; font-weight: bold; color: #1a5235; margin-bottom: 4px;">
+                            بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+                        </div>
+                        <div style="font-size: 11px; font-style: italic; color: #555;">
+                            "Dan peliharalah dirimu dari siksaan pada hari yang (ketika itu) kamu dihadapkan kepada Allah." (QS. Al-Baqarah: 281)
+                        </div>
+                        <hr style="border-top: 2px solid #1a5235; margin-top: 10px; margin-bottom: 8px;"/>
+                        <h3 style="font-weight: bold; text-transform: uppercase; color: #1a5235; letter-spacing: 1px; margin-bottom: 2px;">
+                            KARTU INVENTARISASI &amp; LEGALITAS HARTA BENDA WAKAF
+                        </h3>
+                        <div style="font-size: 13px; font-weight: bold;">
+                            Nomor Registrasi Aset: <span t-field="o.code"/> | Status: <span t-field="o.legal_status"/>
+                        </div>
+                        <div style="font-size: 11px; color: #666;">
+                            Berdasarkan Standar Pengamanan Aset Badan Wakaf Indonesia (BWI) &amp; UU RI No. 41 Tahun 2004
+                        </div>
+                    </div>
+
+                    <!-- Preamble -->
+                    <p style="text-align: justify; font-size: 12px; line-height: 1.5; margin-bottom: 12px;">
+                        Berikut adalah data resmi registrasi fisik, legalitas sertifikat pertanahan (BPN), batas-batas persil, serta pemantauan kondisi aset wakaf yang dikelola oleh Nazhir:
+                    </p>
+
+                    <!-- Table I: Identitas & Klasifikasi Aset -->
+                    <table class="table table-sm table-bordered" style="font-size: 11px; margin-bottom: 12px;">
+                        <tbody>
+                            <tr style="background-color: #f4f9f4;">
+                                <th colspan="2" style="color: #1a5235; font-weight: bold; text-transform: uppercase;">
+                                    I. IDENTITAS &amp; KLASIFIKASI HARTA BENDA WAKAF
+                                </th>
+                            </tr>
+                            <tr>
+                                <td style="width: 32%; font-weight: bold;">Nama / Sebutan Aset</td>
+                                <td><span t-field="o.name"/></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Tipe Aset &amp; Sifat Wakaf</td>
+                                <td><span t-field="o.asset_type"/> — <strong><span t-field="o.waqf_nature"/></strong></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Pola Pemanfaatan</td>
+                                <td><span t-field="o.utilization_type"/></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Akta Ikrar Wakaf (AIW)</td>
+                                <td>
+                                    <span t-esc="o.pledge_id.name or '-'"/>
+                                    <t t-if="o.pledge_id.document_number"> (No. Akta: <span t-esc="o.pledge_id.document_number"/>)</t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Wakif Pemberi Wakaf</td>
+                                <td><span t-esc="o.partner_id.name or '-'"/></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Lokasi / Alamat Lengkap</td>
+                                <td>
+                                    <span t-esc="o.street or ''"/>,
+                                    <span t-esc="o.village or ''"/>,
+                                    <span t-esc="o.district or ''"/>,
+                                    <span t-esc="o.city or ''"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Table II: Legalitas Sertifikat BPN & Tapal Batas -->
+                    <table class="table table-sm table-bordered" style="font-size: 11px; margin-bottom: 12px;">
+                        <tbody>
+                            <tr style="background-color: #f4f9f4;">
+                                <th colspan="2" style="color: #1a5235; font-weight: bold; text-transform: uppercase;">
+                                    II. LEGALITAS BADAN PERTANAHAN NASIONAL (BPN) &amp; BATAS PERSIL
+                                </th>
+                            </tr>
+                            <tr>
+                                <td style="width: 32%; font-weight: bold;">Status Sertifikasi Tanah</td>
+                                <td><span t-field="o.legal_status"/></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Nomor Sertifikat Wakaf BPN</td>
+                                <td><span t-esc="o.bpn_certificate_number or 'Dalam Proses Pendaftaran BPN'"/></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Nomor Identifikasi Bidang (NIB)</td>
+                                <td><span t-esc="o.nib_number or '-'"/></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Luas Tanah / Bangunan</td>
+                                <td><span t-esc="o.land_area"/> m² / <span t-esc="o.building_area"/> m²</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Koordinat GPS</td>
+                                <td>
+                                    Lat: <span t-esc="o.geolocation_lat or '-'"/>,
+                                    Lng: <span t-esc="o.geolocation_lng or '-'"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Batas-Batas Persil</td>
+                                <td>
+                                    <div><strong>Utara:</strong> <span t-esc="o.boundaries_north or '-'"/></div>
+                                    <div><strong>Selatan:</strong> <span t-esc="o.boundaries_south or '-'"/></div>
+                                    <div><strong>Timur:</strong> <span t-esc="o.boundaries_east or '-'"/></div>
+                                    <div><strong>Barat:</strong> <span t-esc="o.boundaries_west or '-'"/></div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Table III: Kondisi Fisik, Penilaian & Asuransi -->
+                    <table class="table table-sm table-bordered" style="font-size: 11px; margin-bottom: 12px;">
+                        <tbody>
+                            <tr style="background-color: #f4f9f4;">
+                                <th colspan="2" style="color: #1a5235; font-weight: bold; text-transform: uppercase;">
+                                    III. PENILAIAN WAJAR, KONDISI &amp; ASURANSI SYARIAH
+                                </th>
+                            </tr>
+                            <tr>
+                                <td style="width: 32%; font-weight: bold;">Nilai Perolehan / Ikrar</td>
+                                <td><span t-field="o.currency_id.symbol"/> <span t-esc="'{0:,.2f}'.format(o.acquisition_value)"/></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Nilai Appraisal Pasar Terkini</td>
+                                <td>
+                                    <span t-field="o.currency_id.symbol"/> <span t-esc="'{0:,.2f}'.format(o.current_appraised_value)"/>
+                                    <t t-if="o.appraiser_name"> (Oleh: <span t-esc="o.appraiser_name"/>)</t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Kondisi Fisik Terkini</td>
+                                <td><span t-field="o.asset_condition"/></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Proteksi Asuransi Syariah</td>
+                                <td>
+                                    <span t-field="o.insurance_status"/>
+                                    <t t-if="o.insurance_policy_number"> (No. Polis: <span t-esc="o.insurance_policy_number"/>)</t>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Statutory Shariah Warning (UU 41/2004 Ps. 40) -->
+                    <div style="background-color: #fff4f4; border-left: 4px solid #c53030; padding: 8px; font-size: 10px; margin-bottom: 20px; line-height: 1.4; color: #742a2a;">
+                        <strong>KETENTUAN HUKUM PASAL 40 UU NO. 41 TAHUN 2004 TENTANG WAKAF:</strong><br/>
+                        Harta benda wakaf yang sudah diwakafkan dilarang keras: (a) dijadikan jaminan, (b) disita, (c) dihibahkan, (d) dijual, (e) diwariskan, (f) ditukar tanpa izin Menteri &amp; BWI, atau (g) dialihkan dalam bentuk pengalihan hak lainnya. Setiap orang yang dengan sengaja melanggar ketentuan ini dipidana dengan pidana penjara paling lama 5 (lima) tahun dan/atau denda paling banyak Rp 500.000.000,00 (Pasal 67 UU 41/2004).
+                    </div>
+
+                    <!-- Signatures -->
+                    <table class="table table-borderless text-center" style="font-size: 11px; margin-top: 15px;">
+                        <tr>
+                            <td style="width: 50%;">
+                                <div>Dicatat &amp; Diverifikasi Oleh,</div>
+                                <div style="font-weight: bold;">Petugas Inventarisasi &amp; Legalitas</div>
+                                <div style="height: 55px;"></div>
+                                <div style="font-weight: bold; text-decoration: underline;">
+                                    Staf Pengamanan Aset Nazhir
+                                </div>
+                                <div style="font-size: 10px; color: #555;">Divisi Hukum &amp; Pertanahan</div>
+                            </td>
+                            <td style="width: 50%;">
+                                <div>Mengetahui &amp; Mengesahkan,</div>
+                                <div style="font-weight: bold;">Pimpinan Nazhir</div>
+                                <div style="height: 55px;"></div>
+                                <div style="font-weight: bold; text-decoration: underline;">
+                                    Direktur / Ketua Lembaga Nazhir
+                                </div>
+                                <div style="font-size: 10px; color: #555;">Nazhir Wakaf Terdaftar BWI</div>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <div class="text-center" style="font-size: 9px; color: #888; margin-top: 12px; border-top: 1px dashed #ccc; padding-top: 5px;">
+                        Dicetak melalui Sistem ERP Tata Kelola Wakaf Nasional (Amal Produktif × FWP × ANI) • Dokumen Sah &amp; Tervalidasi
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

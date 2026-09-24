@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- List View: Harta Benda Wakaf Fisik (Odoo 19/18 list) -->
+    <record id="view_waqf_asset_list" model="ir.ui.view">
+        <field name="name">waqf.asset.list</field>
+        <field name="model">waqf.asset</field>
+        <field name="arch" type="xml">
+            <list string="Harta Benda Wakaf Fisik">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="asset_type"/>
+                <field name="legal_status" widget="badge"
+                       decoration-success="legal_status == 'shm_waqf'"
+                       decoration-info="legal_status == 'aiw_in_process'"
+                       decoration-warning="legal_status in ('girik_letter_c', 'hgb_hp')"
+                       decoration-danger="legal_status == 'dispute'"/>
+                <field name="land_area" string="Luas (m²)"/>
+                <field name="city"/>
+                <field name="asset_condition" widget="badge"
+                       decoration-success="asset_condition in ('excellent', 'good')"
+                       decoration-warning="asset_condition == 'fair'"
+                       decoration-danger="asset_condition == 'damaged'"/>
+                <field name="current_appraised_value" widget="monetary"/>
+                <field name="last_inspection_date"/>
+                <field name="currency_id" column_invisible="True"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View: Harta Benda Wakaf Fisik -->
+    <record id="view_waqf_asset_form" model="ir.ui.view">
+        <field name="name">waqf.asset.form</field>
+        <field name="model">waqf.asset</field>
+        <field name="arch" type="xml">
+            <form string="Harta Benda Wakaf Fisik">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_inspections"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-wrench">
+                            <field string="Inspeksi" name="inspection_count" widget="statinfo"/>
+                        </button>
+                    </div>
+
+                    <widget name="web_ribbon" title="Sertifikat BPN Terbit" bg_color="text-bg-success"
+                            invisible="legal_status != 'shm_waqf'"/>
+                    <widget name="web_ribbon" title="Proses Sertifikasi BPN" bg_color="text-bg-info"
+                            invisible="legal_status != 'aiw_in_process'"/>
+                    <widget name="web_ribbon" title="Sengketa Tapal Batas" bg_color="text-bg-danger"
+                            invisible="legal_status != 'dispute'"/>
+
+                    <div class="oe_title">
+                        <label for="code" string="Nomor Registrasi Aset"/>
+                        <h2>
+                            <field name="code"/>
+                        </h2>
+                        <label for="name" string="Nama / Identitas Harta Benda Wakaf"/>
+                        <h1>
+                            <field name="name" placeholder="Contoh: Tanah Wakaf Masjid Al-Ikhlas, Ruko Produktif 3 Lantai"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Klasifikasi &amp; Asal-Usul Wakaf">
+                            <field name="asset_type"/>
+                            <field name="waqf_nature"/>
+                            <field name="pledge_id"/>
+                            <field name="partner_id"/>
+                            <field name="utilization_type"/>
+                        </group>
+                        <group string="Nilai &amp; Penilaian (Appraisal)">
+                            <field name="currency_id" invisible="1"/>
+                            <field name="acquisition_value" widget="monetary"/>
+                            <field name="current_appraised_value" widget="monetary"/>
+                            <field name="last_appraisal_date"/>
+                            <field name="appraiser_name"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <!-- Tab 1: Sertifikasi Pertanahan & Tapal Batas -->
+                        <page string="Legalitas BPN &amp; Batas Persil" name="legal_boundaries">
+                            <group>
+                                <group string="Sertifikasi Badan Pertanahan Nasional (BPN)">
+                                    <field name="legal_status"/>
+                                    <field name="bpn_certificate_number"/>
+                                    <field name="nib_number"/>
+                                    <field name="bpn_registration_date"/>
+                                </group>
+                                <group string="Dimensi Bidang &amp; Koordinat GPS">
+                                    <field name="land_area"/>
+                                    <field name="building_area"/>
+                                    <label for="geolocation_lat" string="Titik Koordinat GPS"/>
+                                    <div class="o_row">
+                                        <span>Lat:</span> <field name="geolocation_lat" class="oe_inline"/>
+                                        <span>Lng:</span> <field name="geolocation_lng" class="oe_inline"/>
+                                    </div>
+                                    <field name="map_url" widget="url" string="Buka di Peta (Google Maps)"
+                                           invisible="not map_url"/>
+                                </group>
+                            </group>
+                            <group string="Tapal Batas Persil (Sesuai AIW / Sertifikat)">
+                                <group>
+                                    <field name="boundaries_north" placeholder="Batas Sebelah Utara (misal: Jl. Raya Ahmad Yani)"/>
+                                    <field name="boundaries_south" placeholder="Batas Sebelah Selatan (misal: Rumah Bapak Fulan)"/>
+                                </group>
+                                <group>
+                                    <field name="boundaries_east" placeholder="Batas Sebelah Timur (misal: Saluran Irigasi)"/>
+                                    <field name="boundaries_west" placeholder="Batas Sebelah Barat (misal: Tanah Kas Desa)"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- Tab 2: Lokasi & Alamat -->
+                        <page string="Alamat &amp; Lokasi" name="location">
+                            <group>
+                                <group>
+                                    <field name="street"/>
+                                    <field name="village"/>
+                                    <field name="district"/>
+                                </group>
+                                <group>
+                                    <field name="city"/>
+                                    <field name="state_id"/>
+                                    <field name="country_id"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- Tab 3: Kondisi & Asuransi -->
+                        <page string="Kondisi Fisik &amp; Asuransi" name="condition_insurance">
+                            <group>
+                                <group string="Kondisi Fisik &amp; Pemeliharaan">
+                                    <field name="asset_condition"/>
+                                    <field name="last_inspection_date"/>
+                                </group>
+                                <group string="Proteksi Asuransi Syariah (Takaful)">
+                                    <field name="insurance_status"/>
+                                    <field name="insurance_policy_number" invisible="insurance_status == 'uninsured'"/>
+                                    <field name="insurance_company" invisible="insurance_status == 'uninsured'"/>
+                                    <field name="insurance_end_date" invisible="insurance_status == 'uninsured'"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- Tab 4: Riwayat Inspeksi Lapangan -->
+                        <page string="Riwayat Inspeksi Lapangan" name="inspections">
+                            <field name="inspection_ids" readonly="1">
+                                <list string="Inspeksi Lapangan">
+                                    <field name="name"/>
+                                    <field name="date"/>
+                                    <field name="inspector_id"/>
+                                    <field name="inspection_type"/>
+                                    <field name="condition_observed" widget="badge"/>
+                                    <field name="boundary_status" widget="badge"/>
+                                    <field name="action_status" widget="badge"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View: Harta Benda Wakaf Fisik -->
+    <record id="view_waqf_asset_search" model="ir.ui.view">
+        <field name="name">waqf.asset.search</field>
+        <field name="model">waqf.asset</field>
+        <field name="arch" type="xml">
+            <search string="Cari Harta Benda Wakaf Fisik">
+                <field name="name" string="Nama / Kode / No Sertifikat"
+                       filter_domain="['|', '|', ('name', 'ilike', self), ('code', 'ilike', self), ('bpn_certificate_number', 'ilike', self)]"/>
+                <field name="partner_id" string="Wakif"/>
+                <field name="city"/>
+
+                <filter string="Tanah" name="filter_land" domain="[('asset_type', '=', 'land')]"/>
+                <filter string="Gedung / Bangunan" name="filter_building" domain="[('asset_type', '=', 'building')]"/>
+                <separator/>
+                <filter string="Sertifikat BPN Terbit" name="filter_shm_waqf" domain="[('legal_status', '=', 'shm_waqf')]"/>
+                <filter string="Proses Sertifikasi BPN" name="filter_aiw_in_process" domain="[('legal_status', '=', 'aiw_in_process')]"/>
+                <filter string="Sengketa / Bermasalah" name="filter_dispute" domain="[('legal_status', '=', 'dispute')]"/>
+                <separator/>
+                <filter string="Komersial Produktif" name="filter_productive" domain="[('utilization_type', '=', 'productive_commercial')]"/>
+                <filter string="Sosial Non-Profit" name="filter_direct" domain="[('utilization_type', '=', 'direct_service')]"/>
+                <filter string="Lahan Idle" name="filter_idle" domain="[('utilization_type', '=', 'idle')]"/>
+
+                <group expand="0" string="Kelompokkan Berdasarkan">
+                    <filter string="Tipe Aset" name="group_type" context="{'group_by': 'asset_type'}"/>
+                    <filter string="Status Legalitas" name="group_legal" context="{'group_by': 'legal_status'}"/>
+                    <filter string="Kondisi Fisik" name="group_condition" context="{'group_by': 'asset_condition'}"/>
+                    <filter string="Pola Pemanfaatan" name="group_utilization" context="{'group_by': 'utilization_type'}"/>
+                    <filter string="Kota / Daerah" name="group_city" context="{'group_by': 'city'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action: Harta Benda Wakaf Fisik -->
+    <record id="action_waqf_asset" model="ir.actions.act_window">
+        <field name="name">Inventaris Aset Fisik Wakaf</field>
+        <field name="res_model">waqf.asset</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_waqf_asset_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Daftarkan Aset Fisik Wakaf Baru (Tanah / Bangunan)
+            </p>
+            <p>
+                Kelola legalitas sertifikat BPN, tapal batas persil, status perlindungan asuransi syariah, dan pemantauan kondisi fisik aset abadi.
+            </p>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- List View: Log Inspeksi & Pemeliharaan (Odoo 19/18 list) -->
+    <record id="view_waqf_asset_inspection_list" model="ir.ui.view">
+        <field name="name">waqf.asset.inspection.list</field>
+        <field name="model">waqf.asset.inspection</field>
+        <field name="arch" type="xml">
+            <list string="Log Inspeksi &amp; Pemeliharaan Aset">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="asset_id"/>
+                <field name="inspector_id"/>
+                <field name="inspection_type"/>
+                <field name="condition_observed" widget="badge"
+                       decoration-success="condition_observed in ('excellent', 'good')"
+                       decoration-warning="condition_observed == 'fair'"
+                       decoration-danger="condition_observed == 'damaged'"/>
+                <field name="boundary_status" widget="badge"
+                       decoration-success="boundary_status == 'safe'"
+                       decoration-warning="boundary_status == 'threatened'"
+                       decoration-danger="boundary_status == 'disputed'"/>
+                <field name="action_status" widget="badge"
+                       decoration-info="action_status == 'pending'"
+                       decoration-warning="action_status == 'in_progress'"
+                       decoration-success="action_status == 'completed'"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View: Log Inspeksi & Pemeliharaan -->
+    <record id="view_waqf_asset_inspection_form" model="ir.ui.view">
+        <field name="name">waqf.asset.inspection.form</field>
+        <field name="model">waqf.asset.inspection</field>
+        <field name="arch" type="xml">
+            <form string="Log Inspeksi &amp; Pemeliharaan Aset">
+                <header>
+                    <button name="action_mark_in_progress" string="Proses Tindak Lanjut"
+                            type="object" class="oe_highlight"
+                            invisible="action_status in ('in_progress', 'completed')"/>
+                    <button name="action_mark_completed" string="Tandai Selesai"
+                            type="object" class="oe_highlight"
+                            invisible="action_status == 'completed'"/>
+                    <field name="action_status" widget="statusbar"
+                           statusbar_visible="no_action_needed,pending,in_progress,completed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" string="Nomor Log Inspeksi"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Aset &amp; Pelaksana Inspeksi">
+                            <field name="asset_id"/>
+                            <field name="date"/>
+                            <field name="inspector_id"/>
+                            <field name="inspection_type"/>
+                        </group>
+                        <group string="Hasil Observasi Fisik">
+                            <field name="condition_observed"/>
+                            <field name="boundary_status"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Temuan Lapangan" name="findings">
+                            <field name="findings"
+                                   placeholder="Jelaskan temuan kondisi lapangan: kondisi tembok, lantai, atap, instalasi listrik/air, kepatuhan batas persil, kebersihan, dsb..."/>
+                        </page>
+
+                        <page string="Rekomendasi &amp; Estimasi Biaya" name="recommendations">
+                            <group>
+                                <group string="Rekomendasi Tindakan">
+                                    <field name="recommended_action"
+                                           placeholder="Langkah perbaikan fisik, pemagaran, atau advokasi hukum batas tanah..."/>
+                                </group>
+                                <group string="Anggaran Pemeliharaan">
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="estimated_cost" widget="monetary"/>
+                                    <field name="realized_cost" widget="monetary"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View: Log Inspeksi & Pemeliharaan -->
+    <record id="view_waqf_asset_inspection_search" model="ir.ui.view">
+        <field name="name">waqf.asset.inspection.search</field>
+        <field name="model">waqf.asset.inspection</field>
+        <field name="arch" type="xml">
+            <search string="Cari Log Inspeksi">
+                <field name="name" string="Nomor / Temuan"
+                       filter_domain="['|', ('name', 'ilike', self), ('findings', 'ilike', self)]"/>
+                <field name="asset_id"/>
+                <field name="inspector_id"/>
+
+                <filter string="Inspeksi Rutin" name="filter_routine" domain="[('inspection_type', '=', 'routine')]"/>
+                <filter string="Pemeriksaan Tapal Batas" name="filter_boundary" domain="[('inspection_type', '=', 'boundary_check')]"/>
+                <filter string="Insidental / Pasca Bencana" name="filter_incident" domain="[('inspection_type', '=', 'incident')]"/>
+                <separator/>
+                <filter string="Batas Terancam / Sengketa" name="filter_boundary_risk" domain="[('boundary_status', 'in', ('threatened', 'disputed'))]"/>
+                <filter string="Kondisi Rusak" name="filter_damaged" domain="[('condition_observed', '=', 'damaged')]"/>
+                <separator/>
+                <filter string="Butuh Tindak Lanjut" name="filter_needs_action" domain="[('action_status', 'in', ('pending', 'in_progress'))]"/>
+
+                <group expand="0" string="Kelompokkan Berdasarkan">
+                    <filter string="Aset Wakaf" name="group_asset" context="{'group_by': 'asset_id'}"/>
+                    <filter string="Tipe Inspeksi" name="group_type" context="{'group_by': 'inspection_type'}"/>
+                    <filter string="Kondisi Fisik" name="group_condition" context="{'group_by': 'condition_observed'}"/>
+                    <filter string="Keamanan Batas" name="group_boundary" context="{'group_by': 'boundary_status'}"/>
+                    <filter string="Status Tindak Lanjut" name="group_status" context="{'group_by': 'action_status'}"/>
+                    <filter string="Tanggal" name="group_date" context="{'group_by': 'date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action: Log Inspeksi & Pemeliharaan -->
+    <record id="action_waqf_asset_inspection" model="ir.actions.act_window">
+        <field name="name">Inspeksi &amp; Pemeliharaan Rutin</field>
+        <field name="res_model">waqf.asset.inspection</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_waqf_asset_inspection_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Buat Log Inspeksi Fisik Baru
+            </p>
+            <p>
+                Catat hasil pemantauan fisik, keutuhan patok tapal batas sertifikat BPN, serta rencana anggaran perbaikan berkala.
+            </p>
+        </field>
+    </record>
+</odoo>

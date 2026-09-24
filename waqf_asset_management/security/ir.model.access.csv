@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_waqf_asset_user,waqf.asset.user,model_waqf_asset,waqf_core.group_waqf_user,1,1,1,0
+access_waqf_asset_manager,waqf.asset.manager,model_waqf_asset,waqf_core.group_waqf_manager,1,1,1,1
+access_waqf_asset_inspection_user,waqf.asset.inspection.user,model_waqf_asset_inspection,waqf_core.group_waqf_user,1,1,1,0
+access_waqf_asset_inspection_manager,waqf.asset.inspection.manager,model_waqf_asset_inspection,waqf_core.group_waqf_manager,1,1,1,1

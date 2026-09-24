@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_waqf_asset_registry" model="ir.actions.report">
+        <field name="name">Kartu Inventaris Aset Wakaf (BPN/BWI)</field>
+        <field name="model">waqf.asset</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">waqf_asset_management.report_waqf_asset_registry_document</field>
+        <field name="report_file">waqf_asset_management.report_waqf_asset_registry_document</field>
+        <field name="print_report_name">'Kartu_Aset_' + object.code.replace('/', '_')</field>
+        <field name="binding_model_id" ref="model_waqf_asset"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>
