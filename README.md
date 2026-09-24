@@ -174,7 +174,7 @@ waqf-odoo-docker/
 ├── Dockerfile                # Image Odoo 19 + dependensi PSAK 112 (num2words, openpyxl, qrcode)
 ├── init-setup.sh             # Skrip automasi 1-klik provisioning server
 ├── config/
-│   ├── odoo.conf             # Konfigurasi Odoo 19 / 17 (multi-worker, tuning, PSAK 112)
+│   ├── odoo.conf             # Konfigurasi Odoo 19 / 18 LTS / 17 (multi-worker, tuning, PSAK 412/112)
 │   ├── odoo.conf.template    # Template konfigurasi untuk injeksi variabel env
 │   └── Caddyfile             # Konfigurasi Caddy reverse proxy, Auto-SSL & WebSocket
 ├── extra-addons/             # Folder modul ekosistem Wakaf FWP (mounted ke Odoo)
@@ -196,8 +196,8 @@ Port PostgreSQL (`5432`) dan port internal Odoo (`8069`, `8072`) **tidak dibuka*
 ### 2. Proteksi Pemilih Database (`list_db = False`)
 Pada server produksi publik, pemilih database dimatikan (`list_db = False`). Pengunjung umum tidak dapat melihat daftar database atau mencoba meretas database manager. Akses pemeliharaan database hanya dapat diakses melalui URL spesifik `/web/database/manager` dengan otentikasi Master Password.
 
-### 3. Penanganan WebSocket Odoo 17 yang Sempurna
-Odoo 17 memisahkan trafik Web (`8069`) dan WebSocket (`8072`) saat berjalan dalam mode multi-worker. Konfigurasi Caddyfile pada repositori ini telah dikonfigurasi secara spesifik:
+### 3. Penanganan WebSocket Odoo (18 LTS, 19, & 17) yang Sempurna
+Odoo (mulai versi 16, 17, 18 LTS hingga 19) memisahkan trafik Web (`8069`) dan WebSocket (`8072`) saat berjalan dalam mode multi-worker. Konfigurasi Caddyfile pada repositori ini telah dikonfigurasi secara spesifik:
 ```caddy
 handle /websocket* {
     reverse_proxy web:8072 {
