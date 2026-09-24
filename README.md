@@ -1,13 +1,13 @@
 # 🕌 Waqf Odoo Docker
 
 > **Paket Instalasi Turnkey (1-Click Ready-to-Deploy) Sistem ERP Wakaf Berstandar PSAK 412 (PSAK 112) & LSP BWI**  
-> Inisiatif kolaboratif **Forum Wakaf Produktif (FWP / [fwp.or.id](https://fwp.or.id))** bersama **Asosiasi Nazhir Indonesia (ANI / [ani.or.id](https://ani.or.id))** untuk kemandirian, transparansi, dan tata kelola Nazhir di seluruh Indonesia.
+> Inisiatif kolaboratif **Amal Produktif ([amalproduktif.or.id](https://amalproduktif.or.id))**, **Forum Wakaf Produktif (FWP / [fwp.or.id](https://fwp.or.id))**, dan **Asosiasi Nazhir Indonesia (ANI / [ani.or.id](https://ani.or.id))** untuk kemandirian, transparansi, dan tata kelola Nazhir di seluruh Indonesia.
 
 [![Odoo Version](https://img.shields.io/badge/Odoo-19.0%20%7C%2018.0%20(LTS)%20%7C%2017.0-714B67?logo=odoo&logoColor=white)](https://www.odoo.com)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17--alpine%20%7C%2016-336791?logo=postgresql&logoColor=white)](https://www.postgresql.org)
 [![Proxy](https://img.shields.io/badge/Reverse%20Proxy-Caddy%202-00ADD8?logo=caddy&logoColor=white)](https://caddyserver.com)
 [![Accounting Standard](https://img.shields.io/badge/Standard-PSAK%20412%20(112)%20%7C%20LSP%20BWI-059669)](https://www.bwi.go.id)
-[![Collaboration](https://img.shields.io/badge/Initiative-FWP%20%C3%97%20ANI-10B981)](https://fwp.or.id)
+[![Collaboration](https://img.shields.io/badge/Initiative-Amal%20Produktif%20%C3%97%20FWP%20%C3%97%20ANI-10B981)](https://amalproduktif.or.id)
 [![Docker Compose](https://img.shields.io/badge/Docker%20Compose-v2-2496ED?logo=docker&logoColor=white)](https://docs.docker.com/compose/)
 [![License](https://img.shields.io/badge/License-LGPL--3.0-blue.svg)](LICENSE)
 
@@ -20,14 +20,14 @@
 4. [Panduan Cepat: Deploy Odoo Wakaf dalam 5 Menit](#-panduan-cepat-deploy-odoo-wakaf-dalam-5-menit)
 5. [Struktur Repositori](#-struktur-repositori)
 6. [Fitur Keamanan & Performa Produksi](#-fitur-keamanan--performa-produksi)
-7. [Ekosistem Modul Wakaf FWP & ANI](#-ekosistem-modul-wakaf-fwp--ani)
+7. [Ekosistem Modul Wakaf Amal Produktif, FWP & ANI](#-ekosistem-modul-wakaf-amal-produktif-fwp--ani)
 8. [Manajemen Operasional & Pemeliharaan](#-manajemen-operasional--pemeliharaan)
    - [Perintah Docker Harian](#perintah-docker-harian)
    - [Otomasi Backup Harian (Cron Job)](#otomasi-backup-harian-cron-job)
    - [Pemulihan Data Bencana (Disaster Recovery)](#pemulihan-data-bencana-disaster-recovery)
    - [Pembaruan Modul Wakaf](#pembaruan-modul-wakaf)
 9. [Troubleshooting & Tanya Jawab](#-troubleshooting--tanya-jawab)
-10. [Kontribusi & Lisensi](#-kontribusi--lisensi)
+10. [Inisiator & Kontribusi](#-inisiator--kontribusi)
 
 ---
 
@@ -35,7 +35,7 @@
 
 Pengelolaan wakaf di Indonesia menuntut akuntabilitas publik yang tinggi sesuai amanat **UU No. 41 Tahun 2004 tentang Wakaf**, standar akuntansi **PSAK 412: Akuntansi Wakaf** (sebelumnya diterbitkan sebagai **PSAK 112** pasca-rekodifikasi SAK Syariah oleh IAI), serta standar kompetensi kerja **LSP BWI (Badan Wakaf Indonesia)**.
 
-Banyak lembaga Nazhir di daerah memiliki keterbatasan dalam membangun infrastruktur TI mandiri dan sering terkendala biaya lisensi software komersial yang mahal. Oleh karena itu, **Forum Wakaf Produktif (FWP)** dan **Asosiasi Nazhir Indonesia (ANI)** berkolaborasi menghadirkan **`waqf-odoo-docker`** sebagai solusi instalasi instan (*turnkey package*). Paket ini memungkinkan Nazhir menyewa VPS Linux standar (Ubuntu 22.04/24.04), menjalankan satu perintah inisialisasi, dan langsung memiliki sistem ERP Wakaf siap produksi yang:
+Banyak lembaga Nazhir di daerah memiliki keterbatasan dalam membangun infrastruktur TI mandiri dan sering terkendala biaya lisensi software komersial yang mahal. Oleh karena itu, **Amal Produktif** berkolaborasi bersama **Forum Wakaf Produktif (FWP)** dan **Asosiasi Nazhir Indonesia (ANI)** menghadirkan **`waqf-odoo-docker`** sebagai solusi instalasi instan (*turnkey package*). Paket ini memungkinkan Nazhir menyewa VPS Linux standar (Ubuntu 22.04/24.04), menjalankan satu perintah inisialisasi, dan langsung memiliki sistem ERP Wakaf siap produksi yang:
 
 - **Efisien**: Dioptimasi khusus untuk VPS ekonomis (4 GB – 8 GB RAM).
 - **Aman**: Isolasi port internal, proteksi pemilih database, dan sertifikat SSL otomatis.
@@ -219,9 +219,9 @@ Dikonfigurasi untuk VPS 4 GB - 8 GB RAM dengan formula:
 
 ---
 
-## 🧩 Ekosistem Modul Wakaf FWP & ANI
+## 🧩 Ekosistem Modul Wakaf Amal Produktif, FWP & ANI
 
-Direktori `./extra-addons` disiapkan untuk memuat modul-modul resmi hasil kolaborasi Forum Wakaf Produktif (FWP) dan Asosiasi Nazhir Indonesia (ANI):
+Direktori `./extra-addons` disiapkan untuk memuat modul-modul resmi hasil kolaborasi Amal Produktif, Forum Wakaf Produktif (FWP), dan Asosiasi Nazhir Indonesia (ANI):
 
 | Modul | Standar Acuan | Fungsi Utama |
 | :--- | :--- | :--- |
@@ -334,10 +334,11 @@ Ubah nilai <code>ADMIN_PASSWORD</code> di dalam file <code>.env</code>, lalu jal
 
 ## 🤝 Inisiator & Kontribusi
 
-Proyek ini bersifat sumber terbuka (Open-Source) di bawah lisensi **LGPL-3.0**. Diinisiasi secara kolaboratif oleh:
-- **Forum Wakaf Produktif (FWP)** – [fwp.or.id](https://fwp.or.id)
-- **Asosiasi Nazhir Indonesia (ANI)** – [ani.or.id](https://ani.or.id)
-- **Didukung oleh Standar Kompetensi**: LSP Badan Wakaf Indonesia (BWI)
+Proyek ini bersifat sumber terbuka (Open-Source) di bawah lisensi **LGPL-3.0**. Diinisiasi dan dikembangkan secara kolaboratif oleh:
+- **Amal Produktif** – [amalproduktif.or.id](https://amalproduktif.or.id) (*Lembaga Nazhir Wakaf Produktif & Lead Technical Maintainer*)
+- **Forum Wakaf Produktif (FWP)** – [fwp.or.id](https://fwp.or.id) (*Wadah Kolaborasi Nazhir Produktif Nasional*)
+- **Asosiasi Nazhir Indonesia (ANI)** – [ani.or.id](https://ani.or.id) (*Asosiasi Resmi Profesi & Kelembagaan Nazhir Indonesia*)
+- **Didukung oleh Standar Kompetensi**: LSP Badan Wakaf Indonesia (BWI) & DSAS IAI (PSAK 412/112)
 
 Kami mengundang developer, akuntan syariah, akademisi, dan praktisi wakaf di seluruh Indonesia untuk berkontribusi.
 - **Laporkan Masalah / Permintaan Fitur**: Silakan buat *Issue* atau *Pull Request* pada repositori ini.

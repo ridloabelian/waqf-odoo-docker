@@ -1,4 +1,4 @@
-# Copyright 2026 Forum Wakaf Produktif (FWP) & Asosiasi Nazhir Indonesia (ANI)
+# Copyright 2026 Amal Produktif, Forum Wakaf Produktif (FWP) & Asosiasi Nazhir Indonesia (ANI)
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 {
@@ -6,8 +6,8 @@
     "summary": "Standar Akuntansi Wakaf PSAK 412 (sebelumnya PSAK 112), Engine account.report, Klasifikasi Aset Neto, Batasan Hak Nazhir 10%, dan Dashboard OWL",
     "version": "19.0.1.0.0",
     "category": "Accounting/Localizations",
-    "author": "Forum Wakaf Produktif (FWP), Asosiasi Nazhir Indonesia (ANI), Odoo Community Association (OCA)",
-    "website": "https://fwp.or.id, https://ani.or.id",
+    "author": "Amal Produktif, Forum Wakaf Produktif (FWP), Asosiasi Nazhir Indonesia (ANI), Odoo Community Association (OCA)",
+    "website": "https://amalproduktif.or.id, https://fwp.or.id, https://ani.or.id",
     "license": "LGPL-3",
     "application": False,
     "installable": True,

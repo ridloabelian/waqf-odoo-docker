@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ==============================================================================
 # WAQF ODOO DOCKER - AUTOMATED BACKUP SCRIPT
-# Forum Wakaf Produktif (FWP) & Asosiasi Nazhir Indonesia (ANI)
+# Inisiatif Kolaboratif: Amal Produktif, FWP & Asosiasi Nazhir Indonesia (ANI)
 # Standar Akuntansi PSAK 412 (PSAK 112) & Standar LSP BWI
 # ==============================================================================
 # Skrip ini mencadangkan Database PostgreSQL dan Odoo Filestore (lampiran dokumen,
@@ -79,7 +79,7 @@ echo "[$(date '+%Y-%m-%d %H:%M:%S')]       ✓ Filestore berhasil diarsipkan ($(
 cat <<EOF > "$TEMP_DIR/manifest.json"
 {
   "system": "waqf-odoo-docker",
-  "organization": "Forum Wakaf Produktif (FWP) & Asosiasi Nazhir Indonesia (ANI)",
+  "organization": "Amal Produktif, Forum Wakaf Produktif (FWP) & Asosiasi Nazhir Indonesia (ANI)",
   "standard": "PSAK 412 (112) & LSP BWI",
   "timestamp": "${TIMESTAMP}",
   "database": "${POSTGRES_DB:-postgres}",
