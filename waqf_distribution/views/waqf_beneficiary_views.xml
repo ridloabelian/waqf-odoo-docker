@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- List View: Mauquf 'Alaih (Odoo 19/18 list) -->
+    <record id="view_waqf_beneficiary_list" model="ir.ui.view">
+        <field name="name">waqf.beneficiary.list</field>
+        <field name="model">waqf.beneficiary</field>
+        <field name="arch" type="xml">
+            <list string="Mauquf 'Alaih (Penerima Manfaat)">
+                <field name="name"/>
+                <field name="beneficiary_type"/>
+                <field name="identity_number"/>
+                <field name="sector"/>
+                <field name="phone"/>
+                <field name="city"/>
+                <field name="eligibility_status" widget="badge"
+                       decoration-success="eligibility_status == 'eligible'"
+                       decoration-info="eligibility_status == 'pending'"
+                       decoration-warning="eligibility_status == 'suspended'"
+                       decoration-danger="eligibility_status == 'rejected'"/>
+                <field name="distribution_count"/>
+                <field name="total_distributed_amount" widget="monetary"/>
+                <field name="currency_id" column_invisible="True"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View: Mauquf 'Alaih -->
+    <record id="view_waqf_beneficiary_form" model="ir.ui.view">
+        <field name="name">waqf.beneficiary.form</field>
+        <field name="model">waqf.beneficiary</field>
+        <field name="arch" type="xml">
+            <form string="Mauquf 'Alaih (Penerima Manfaat)">
+                <header>
+                    <button name="action_set_eligible" string="Setujui Kelayakan (Eligible)"
+                            type="object" class="oe_highlight"
+                            invisible="eligibility_status == 'eligible'"/>
+                    <button name="action_set_suspended" string="Tangguhkan"
+                            type="object"
+                            invisible="eligibility_status in ('suspended', 'rejected')"/>
+                    <button name="action_set_rejected" string="Tolak Kelayakan"
+                            type="object"
+                            invisible="eligibility_status == 'rejected'"/>
+                    <field name="eligibility_status" widget="statusbar"
+                           statusbar_visible="pending,eligible,suspended,rejected"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="object" name="action_set_eligible" icon="fa-heart">
+                            <field string="Penyaluran" name="distribution_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Eligible" bg_color="text-bg-success"
+                            invisible="eligibility_status != 'eligible'"/>
+                    <widget name="web_ribbon" title="Ditangguhkan" bg_color="text-bg-warning"
+                            invisible="eligibility_status != 'suspended'"/>
+                    <widget name="web_ribbon" title="Ditolak" bg_color="text-bg-danger"
+                            invisible="eligibility_status != 'rejected'"/>
+
+                    <div class="oe_title">
+                        <label for="name" string="Nama Mauquf 'Alaih"/>
+                        <h1>
+                            <field name="name" placeholder="Nama Individu / Lembaga Penerima"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Profil &amp; Identitas">
+                            <field name="beneficiary_type"/>
+                            <field name="identity_number" placeholder="16 digit NIK atau Nomor Izin"/>
+                            <field name="sector"/>
+                            <field name="partner_id"/>
+                        </group>
+                        <group string="Statistik Penyaluran">
+                            <field name="currency_id" invisible="1"/>
+                            <field name="total_distributed_amount" widget="monetary"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Kontak &amp; Rekening Bank" name="contact_bank">
+                            <group>
+                                <group string="Kontak &amp; Alamat">
+                                    <field name="contact_person" invisible="beneficiary_type != 'institution'"/>
+                                    <field name="phone"/>
+                                    <field name="email"/>
+                                    <field name="street"/>
+                                    <field name="city"/>
+                                    <field name="state_id"/>
+                                    <field name="country_id"/>
+                                </group>
+                                <group string="Rekening Bank Penyaluran">
+                                    <field name="bank_id"/>
+                                    <field name="bank_account_number"/>
+                                    <field name="bank_account_name"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Asesmen Kelayakan Syariah" name="assessment">
+                            <field name="assessment_notes"
+                                   placeholder="Uraikan hasil survei lapangan, wawancara, verifikasi kebutuhan mustahiq, dan rekomendasi komite..."/>
+                        </page>
+
+                        <page string="Riwayat Penyaluran Manfaat" name="distributions">
+                            <field name="distribution_ids" readonly="1">
+                                <list string="Riwayat Penyaluran">
+                                    <field name="name"/>
+                                    <field name="date"/>
+                                    <field name="program_id"/>
+                                    <field name="amount" widget="monetary"/>
+                                    <field name="currency_id" column_invisible="True"/>
+                                    <field name="state" widget="badge"
+                                           decoration-success="state == 'disbursed'"
+                                           decoration-info="state == 'approved'"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View: Mauquf 'Alaih -->
+    <record id="view_waqf_beneficiary_search" model="ir.ui.view">
+        <field name="name">waqf.beneficiary.search</field>
+        <field name="model">waqf.beneficiary</field>
+        <field name="arch" type="xml">
+            <search string="Cari Mauquf 'Alaih">
+                <field name="name" string="Nama / Identitas"
+                       filter_domain="['|', ('name', 'ilike', self), ('identity_number', 'ilike', self)]"/>
+                <field name="phone"/>
+                <field name="city"/>
+
+                <filter string="Layak (Eligible)" name="filter_eligible" domain="[('eligibility_status', '=', 'eligible')]"/>
+                <filter string="Menunggu Asesmen" name="filter_pending" domain="[('eligibility_status', '=', 'pending')]"/>
+                <separator/>
+                <filter string="Perorangan / Mustahiq" name="filter_individual" domain="[('beneficiary_type', '=', 'individual')]"/>
+                <filter string="Lembaga / Yayasan" name="filter_institution" domain="[('beneficiary_type', '=', 'institution')]"/>
+                <separator/>
+                <filter string="Pendidikan" name="filter_edu" domain="[('sector', '=', 'education')]"/>
+                <filter string="Kesehatan" name="filter_health" domain="[('sector', '=', 'health')]"/>
+                <filter string="Ekonomi UMKM" name="filter_economic" domain="[('sector', '=', 'economic')]"/>
+
+                <group expand="0" string="Kelompokkan Berdasarkan">
+                    <filter string="Status Kelayakan" name="group_status" context="{'group_by': 'eligibility_status'}"/>
+                    <filter string="Tipe Penerima" name="group_type" context="{'group_by': 'beneficiary_type'}"/>
+                    <filter string="Sektor" name="group_sector" context="{'group_by': 'sector'}"/>
+                    <filter string="Kota / Daerah" name="group_city" context="{'group_by': 'city'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action: Mauquf 'Alaih -->
+    <record id="action_waqf_beneficiary" model="ir.actions.act_window">
+        <field name="name">Mauquf 'Alaih (Penerima Manfaat)</field>
+        <field name="res_model">waqf.beneficiary</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_waqf_beneficiary_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Daftarkan Mauquf 'Alaih (Penerima Manfaat) Baru
+            </p>
+            <p>
+                Kelola master data penerima manfaat wakaf, asesmen kelayakan syariah, hingga riwayat penyaluran.
+            </p>
+        </field>
+    </record>
+</odoo>

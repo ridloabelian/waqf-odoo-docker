@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Parent Menu: Penyaluran Manfaat (di bawah menu_waqf_root dari waqf_core) -->
+    <menuitem id="menu_waqf_distribution_root"
+              name="Penyaluran Manfaat"
+              parent="waqf_core.menu_waqf_root"
+              sequence="20"/>
+
+    <!-- Submenu: Transaksi Penyaluran -->
+    <menuitem id="menu_waqf_distribution_act"
+              name="Penyaluran Manfaat"
+              parent="menu_waqf_distribution_root"
+              action="action_waqf_distribution"
+              sequence="10"/>
+
+    <!-- Submenu: Mauquf 'Alaih -->
+    <menuitem id="menu_waqf_beneficiary_act"
+              name="Mauquf 'Alaih (Penerima)"
+              parent="menu_waqf_distribution_root"
+              action="action_waqf_beneficiary"
+              sequence="20"/>
+
+    <!-- Submenu: Program Penyaluran -->
+    <menuitem id="menu_waqf_distribution_program_act"
+              name="Program Penyaluran"
+              parent="menu_waqf_distribution_root"
+              action="action_waqf_distribution_program"
+              sequence="30"/>
+</odoo>

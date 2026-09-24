@@ -44,7 +44,7 @@ Jalankan skrip helper yang telah disediakan di root proyek:
 ### Opsi B: Kloning Manual via Git
 ```bash
 cd extra-addons
-git clone https://github.com/forumwakafproduktif/waqf-odoo-modules.git
+git clone https://github.com/ridloabelian/waqf-odoo-modules.git
 ```
 
 ### Opsi C: Mengunggah Folder Modul Sendiri

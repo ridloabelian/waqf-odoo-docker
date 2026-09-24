@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_disbursement_receipt_document">
+        <t t-call="web.basic_layout">
+            <t t-foreach="docs" t-as="o">
+                <div class="page" style="font-family: 'Times New Roman', Times, serif; color: #2c3e50; padding: 25px; border: 3px double #1a5235; border-radius: 6px;">
+                    <!-- Islamic Header -->
+                    <div class="text-center mb-3">
+                        <div style="font-size: 22px; font-weight: bold; color: #1a5235; margin-bottom: 4px;">
+                            بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+                        </div>
+                        <div style="font-size: 11px; font-style: italic; color: #555;">
+                            "Dan apa saja kebajikan yang kamu perbuat, sesungguhnya Allah Maha Mengetahui." (QS. Al-Baqarah: 215)
+                        </div>
+                        <hr style="border-top: 2px solid #1a5235; margin-top: 10px; margin-bottom: 8px;"/>
+                        <h3 style="font-weight: bold; text-transform: uppercase; color: #1a5235; letter-spacing: 1px; margin-bottom: 2px;">
+                            BERITA ACARA SERAH TERIMA (BAST) &amp; TANDA TERIMA MANFAAT WAKAF
+                        </h3>
+                        <div style="font-size: 13px; font-weight: bold;">
+                            Nomor: <span t-field="o.name"/> | Tanggal: <span t-field="o.date" t-options='{"format": "dd MMMM yyyy"}'/>
+                        </div>
+                        <div style="font-size: 11px; color: #666;">
+                            Standar Akuntabilitas Penyaluran PSAK 412 (112) &amp; Regulasi UU No. 41 Tahun 2004
+                        </div>
+                    </div>
+
+                    <!-- Preamble -->
+                    <p style="text-align: justify; font-size: 12px; line-height: 1.5; margin-bottom: 12px;">
+                        Pada hari ini <strong><span t-field="o.date" t-options='{"format": "EEEE, dd MMMM yyyy"}'/></strong>, telah diserahterimakan hak manfaat hasil pengelolaan dan pengembangan harta benda wakaf kepada Mauquf 'Alaih dengan rincian sebagai berikut:
+                    </p>
+
+                    <!-- Details Table: Penerima Manfaat -->
+                    <table class="table table-sm table-bordered" style="font-size: 11px; margin-bottom: 12px;">
+                        <tbody>
+                            <tr style="background-color: #f4f9f4;">
+                                <th colspan="2" style="color: #1a5235; font-weight: bold; text-transform: uppercase;">
+                                    I. IDENTITAS MAUQUF 'ALAIH (PENERIMA MANFAAT)
+                                </th>
+                            </tr>
+                            <tr>
+                                <td style="width: 32%; font-weight: bold;">Nama Penerima</td>
+                                <td><span t-field="o.beneficiary_id.name"/></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Tipe Penerima</td>
+                                <td><span t-field="o.beneficiary_id.beneficiary_type"/></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Nomor NIK / Legalitas</td>
+                                <td><span t-esc="o.beneficiary_id.identity_number or '-'"/></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Telepon / Kontak</td>
+                                <td><span t-esc="o.beneficiary_id.phone or '-'"/></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Alamat Lengkap</td>
+                                <td>
+                                    <span t-esc="o.beneficiary_id.street or ''"/>,
+                                    <span t-esc="o.beneficiary_id.city or ''"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Details Table: Rincian Penyaluran -->
+                    <table class="table table-sm table-bordered" style="font-size: 11px; margin-bottom: 12px;">
+                        <tbody>
+                            <tr style="background-color: #f4f9f4;">
+                                <th colspan="2" style="color: #1a5235; font-weight: bold; text-transform: uppercase;">
+                                    II. RINCIAN PROGRAM &amp; NILAI MANFAAT
+                                </th>
+                            </tr>
+                            <tr>
+                                <td style="width: 32%; font-weight: bold;">Nama Program</td>
+                                <td><span t-field="o.program_id.name"/> (<span t-field="o.program_id.code"/>)</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Sektor Peruntukan</td>
+                                <td><span t-field="o.sector"/></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Metode Penyaluran</td>
+                                <td><span t-field="o.disbursement_method"/></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Peruntukan Manfaat</td>
+                                <td><span t-field="o.disbursement_purpose"/></td>
+                            </tr>
+                            <tr style="background-color: #fcfcfc;">
+                                <td style="font-weight: bold; font-size: 13px; color: #1a5235;">TOTAL NILAI MANFAAT</td>
+                                <td style="font-weight: bold; font-size: 13px; color: #1a5235;">
+                                    <span t-field="o.currency_id.symbol"/> <span t-esc="'{0:,.2f}'.format(o.amount)"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Accountability Statement -->
+                    <div style="background-color: #f9fbf9; border-left: 4px solid #1a5235; padding: 8px; font-size: 10.5px; margin-bottom: 25px; line-height: 1.4;">
+                        <strong>Pernyataan Kepatuhan Syariah &amp; Akuntansi PSAK 412:</strong><br/>
+                        Dana penyaluran ini bersumber murni dari <em>Surplus Hasil Pengelolaan &amp; Pengembangan Wakaf (Aset Neto Tidak Terikat)</em>. Entitas Nazhir menjamin bahwa dana pokok wakaf abadi (Aset Neto Terikat Permanen) terjaga utuh dan tidak tergerus untuk pembiayaan penyaluran ini.
+                    </div>
+
+                    <!-- Signatures -->
+                    <table class="table table-borderless text-center" style="font-size: 11px; margin-top: 20px;">
+                        <tr>
+                            <td style="width: 33%;">
+                                <div>Diterima Oleh,</div>
+                                <div style="font-weight: bold;">Mauquf 'Alaih</div>
+                                <div style="height: 60px;"></div>
+                                <div style="font-weight: bold; text-decoration: underline;">
+                                    <span t-esc="o.receipt_recipient_name or o.beneficiary_id.name"/>
+                                </div>
+                                <div style="font-size: 10px; color: #555;">Penerima Manfaat</div>
+                            </td>
+                            <td style="width: 34%;">
+                                <div>Diserahkan Oleh,</div>
+                                <div style="font-weight: bold;">Petugas Penyaluran</div>
+                                <div style="height: 60px;"></div>
+                                <div style="font-weight: bold; text-decoration: underline;">
+                                    <span t-esc="o.disbursed_by_id.name or o.verifier_id.name or 'Petugas Penyaluran'"/>
+                                </div>
+                                <div style="font-size: 10px; color: #555;">Staf Pendayagunaan Nazhir</div>
+                            </td>
+                            <td style="width: 33%;">
+                                <div>Mengetahui &amp; Menyetujui,</div>
+                                <div style="font-weight: bold;">Pimpinan Nazhir</div>
+                                <div style="height: 60px;"></div>
+                                <div style="font-weight: bold; text-decoration: underline;">
+                                    <span t-esc="o.approver_id.name or 'Pimpinan Nazhir'"/>
+                                </div>
+                                <div style="font-size: 10px; color: #555;">Direktur / Ketua Nazhir</div>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <div class="text-center" style="font-size: 9px; color: #888; margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 5px;">
+                        Dicetak secara otomatis melalui Sistem ERP Tata Kelola Wakaf Nasional (Amal Produktif × FWP × ANI) • Dokumen Sah &amp; Tervalidasi
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

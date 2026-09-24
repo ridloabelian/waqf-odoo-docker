@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Multi-company Rules -->
+    <record id="waqf_beneficiary_comp_rule" model="ir.rule">
+        <field name="name">Mauquf Alaih Multi-Company</field>
+        <field name="model_id" ref="model_waqf_beneficiary"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="waqf_distribution_program_comp_rule" model="ir.rule">
+        <field name="name">Waqf Distribution Program Multi-Company</field>
+        <field name="model_id" ref="model_waqf_distribution_program"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="waqf_distribution_comp_rule" model="ir.rule">
+        <field name="name">Waqf Distribution Multi-Company</field>
+        <field name="model_id" ref="model_waqf_distribution"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+</odoo>

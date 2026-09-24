@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- List View: Program Penyaluran (Odoo 19/18 list) -->
+    <record id="view_waqf_distribution_program_list" model="ir.ui.view">
+        <field name="name">waqf.distribution.program.list</field>
+        <field name="model">waqf.distribution.program</field>
+        <field name="arch" type="xml">
+            <list string="Program Penyaluran Manfaat Wakaf">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="sector"/>
+                <field name="budget_allocated" widget="monetary"/>
+                <field name="budget_realized" widget="monetary"/>
+                <field name="budget_remaining" widget="monetary"/>
+                <field name="distribution_count"/>
+                <field name="currency_id" column_invisible="True"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View: Program Penyaluran -->
+    <record id="view_waqf_distribution_program_form" model="ir.ui.view">
+        <field name="name">waqf.distribution.program.form</field>
+        <field name="model">waqf.distribution.program</field>
+        <field name="arch" type="xml">
+            <form string="Program Penyaluran Manfaat Wakaf">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="code" string="Kode Program"/>
+                        <h2>
+                            <field name="code" placeholder="Contoh: PRG-EDU-01"/>
+                        </h2>
+                        <label for="name" string="Nama Program"/>
+                        <h1>
+                            <field name="name" placeholder="Nama Program Penyaluran"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Konfigurasi &amp; Akuntansi">
+                            <field name="sector"/>
+                            <field name="default_expense_account_id"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                        </group>
+                        <group string="Anggaran &amp; Realisasi">
+                            <field name="currency_id" invisible="1"/>
+                            <field name="budget_allocated" widget="monetary"/>
+                            <field name="budget_realized" widget="monetary"/>
+                            <field name="budget_remaining" widget="monetary"/>
+                            <field name="distribution_count"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="active" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Deskripsi &amp; Sasaran" name="desc">
+                            <field name="description" placeholder="Uraian sasaran manfaat, kriteria penerima, dan target dampak sosial/ekonomi..."/>
+                        </page>
+
+                        <page string="Daftar Realisasi Penyaluran" name="distributions">
+                            <field name="distribution_ids" readonly="1">
+                                <list string="Penyaluran Program">
+                                    <field name="name"/>
+                                    <field name="date"/>
+                                    <field name="beneficiary_id"/>
+                                    <field name="amount" widget="monetary"/>
+                                    <field name="currency_id" column_invisible="True"/>
+                                    <field name="state" widget="badge"
+                                           decoration-success="state == 'disbursed'"
+                                           decoration-info="state == 'approved'"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View: Program Penyaluran -->
+    <record id="view_waqf_distribution_program_search" model="ir.ui.view">
+        <field name="name">waqf.distribution.program.search</field>
+        <field name="model">waqf.distribution.program</field>
+        <field name="arch" type="xml">
+            <search string="Cari Program Penyaluran">
+                <field name="name" string="Nama / Kode"
+                       filter_domain="['|', ('name', 'ilike', self), ('code', 'ilike', self)]"/>
+                <field name="sector"/>
+
+                <filter string="Pendidikan" name="filter_edu" domain="[('sector', '=', 'education')]"/>
+                <filter string="Kesehatan" name="filter_health" domain="[('sector', '=', 'health')]"/>
+                <filter string="Ekonomi UMKM" name="filter_economic" domain="[('sector', '=', 'economic')]"/>
+                <filter string="Dakwah &amp; Ibadah" name="filter_social" domain="[('sector', '=', 'social_religious')]"/>
+
+                <group expand="0" string="Kelompokkan Berdasarkan">
+                    <filter string="Sektor" name="group_sector" context="{'group_by': 'sector'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action: Program Penyaluran -->
+    <record id="action_waqf_distribution_program" model="ir.actions.act_window">
+        <field name="name">Program Penyaluran Manfaat</field>
+        <field name="res_model">waqf.distribution.program</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_waqf_distribution_program_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Buat Program Penyaluran Wakaf Baru
+            </p>
+            <p>
+                Rencanakan program pendayagunaan dan distribusi hasil bersih pengelolaan wakaf untuk Mauquf 'Alaih.
+            </p>
+        </field>
+    </record>
+</odoo>

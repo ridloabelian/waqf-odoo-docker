@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- List View: Realisasi Penyaluran Manfaat (Odoo 19/18 list) -->
+    <record id="view_waqf_distribution_list" model="ir.ui.view">
+        <field name="name">waqf.distribution.list</field>
+        <field name="model">waqf.distribution</field>
+        <field name="arch" type="xml">
+            <list string="Penyaluran Manfaat Wakaf">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="program_id"/>
+                <field name="beneficiary_id"/>
+                <field name="sector"/>
+                <field name="disbursement_method"/>
+                <field name="amount" widget="monetary"/>
+                <field name="state" widget="badge"
+                       decoration-muted="state == 'draft'"
+                       decoration-warning="state == 'reviewed'"
+                       decoration-info="state == 'approved'"
+                       decoration-success="state == 'disbursed'"
+                       decoration-danger="state == 'cancel'"/>
+                <field name="currency_id" column_invisible="True"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View: Realisasi Penyaluran Manfaat -->
+    <record id="view_waqf_distribution_form" model="ir.ui.view">
+        <field name="name">waqf.distribution.form</field>
+        <field name="model">waqf.distribution</field>
+        <field name="arch" type="xml">
+            <form string="Penyaluran Manfaat Wakaf">
+                <header>
+                    <button name="action_review" string="Tinjau &amp; Verifikasi"
+                            type="object" class="oe_highlight"
+                            invisible="state != 'draft'"/>
+                    <button name="action_approve" string="Setujui Penyaluran"
+                            type="object" class="oe_highlight"
+                            invisible="state != 'reviewed'"/>
+                    <button name="action_disburse" string="Salurkan &amp; Posting Akuntansi"
+                            type="object" class="oe_highlight"
+                            invisible="state != 'approved'"/>
+                    <button name="action_cancel" string="Batalkan"
+                            type="object"
+                            invisible="state in ('disbursed', 'cancel')"/>
+                    <button name="action_draft" string="Kembalikan ke Draf"
+                            type="object"
+                            invisible="state != 'cancel'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,reviewed,approved,disbursed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_move"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-book"
+                                invisible="not move_id">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Entri Jurnal</span>
+                                <span class="o_stat_value">PSAK 412</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <widget name="web_ribbon" title="Tersalurkan" bg_color="text-bg-success"
+                            invisible="state != 'disbursed'"/>
+                    <widget name="web_ribbon" title="Dibatalkan" bg_color="text-bg-danger"
+                            invisible="state != 'cancel'"/>
+
+                    <div class="oe_title">
+                        <label for="name" string="Nomor Penyaluran"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Program &amp; Penerima Manfaat">
+                            <field name="program_id" readonly="state in ('approved', 'disbursed')"/>
+                            <field name="beneficiary_id" readonly="state in ('approved', 'disbursed')"/>
+                            <field name="sector"/>
+                            <field name="receipt_recipient_name" readonly="state == 'disbursed'"/>
+                        </group>
+                        <group string="Rincian Penyaluran">
+                            <field name="date" readonly="state == 'disbursed'"/>
+                            <label for="amount" string="Nominal Penyaluran"/>
+                            <div class="o_row">
+                                <field name="amount" widget="monetary" readonly="state in ('approved', 'disbursed')"/>
+                                <field name="currency_id" invisible="1"/>
+                            </div>
+                            <field name="disbursement_method" readonly="state in ('approved', 'disbursed')"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Peruntukan Manfaat" name="purpose">
+                            <field name="disbursement_purpose"
+                                   placeholder="Jelaskan secara rinci tujuan pemberian manfaat (misal: Bantuan Uang Kuliah Tunggal semester genap, biaya rawat inap mustahiq, modal usaha pedagang sayur)..."
+                                   readonly="state in ('approved', 'disbursed')"/>
+                        </page>
+
+                        <page string="Akuntansi PSAK 412 &amp; Kas/Bank" name="accounting">
+                            <div class="alert alert-info" role="alert">
+                                <strong>Kepatuhan Syariah PSAK 412 &amp; UU 41/2004:</strong><br/>
+                                Penyaluran manfaat kepada Mauquf 'Alaih <strong>HANYA</strong> boleh bersumber dari Akun Beban Penyaluran (Aset Neto Tidak Terikat / Surplus Pengelolaan). Sistem memproteksi dana pokok wakaf abadi (Aset Neto Terikat Permanen) agar tidak terpotong.
+                            </div>
+                            <group>
+                                <group string="Pengaturan Akuntansi">
+                                    <field name="expense_account_id" readonly="state in ('approved', 'disbursed')"/>
+                                    <field name="journal_id" readonly="state in ('approved', 'disbursed')"/>
+                                </group>
+                                <group string="Status Entri Jurnal">
+                                    <field name="move_id" readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Audit &amp; Log Persetujuan" name="audit">
+                            <group>
+                                <group string="Verifikasi Program">
+                                    <field name="verifier_id"/>
+                                    <field name="verified_date"/>
+                                </group>
+                                <group string="Persetujuan Komite &amp; Realisasi">
+                                    <field name="approver_id"/>
+                                    <field name="approved_date"/>
+                                    <field name="disbursed_by_id"/>
+                                    <field name="disbursed_date"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View: Realisasi Penyaluran Manfaat -->
+    <record id="view_waqf_distribution_search" model="ir.ui.view">
+        <field name="name">waqf.distribution.search</field>
+        <field name="model">waqf.distribution</field>
+        <field name="arch" type="xml">
+            <search string="Cari Penyaluran Manfaat">
+                <field name="name" string="Nomor / Peruntukan"
+                       filter_domain="['|', ('name', 'ilike', self), ('disbursement_purpose', 'ilike', self)]"/>
+                <field name="program_id"/>
+                <field name="beneficiary_id"/>
+
+                <filter string="Draf" name="filter_draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Ditinjau" name="filter_reviewed" domain="[('state', '=', 'reviewed')]"/>
+                <filter string="Disetujui" name="filter_approved" domain="[('state', '=', 'approved')]"/>
+                <filter string="Telah Disalurkan" name="filter_disbursed" domain="[('state', '=', 'disbursed')]"/>
+                <separator/>
+                <filter string="Transfer Bank" name="filter_bank" domain="[('disbursement_method', '=', 'bank_transfer')]"/>
+                <filter string="Tunai Langsung" name="filter_cash" domain="[('disbursement_method', '=', 'cash')]"/>
+                <filter string="Natura / Barang" name="filter_goods" domain="[('disbursement_method', '=', 'goods')]"/>
+
+                <group expand="0" string="Kelompokkan Berdasarkan">
+                    <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Program Penyaluran" name="group_program" context="{'group_by': 'program_id'}"/>
+                    <filter string="Mauquf 'Alaih" name="group_beneficiary" context="{'group_by': 'beneficiary_id'}"/>
+                    <filter string="Sektor" name="group_sector" context="{'group_by': 'sector'}"/>
+                    <filter string="Tanggal Penyaluran" name="group_date" context="{'group_by': 'date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action: Realisasi Penyaluran Manfaat -->
+    <record id="action_waqf_distribution" model="ir.actions.act_window">
+        <field name="name">Penyaluran Manfaat (Mauquf 'Alaih)</field>
+        <field name="res_model">waqf.distribution</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_waqf_distribution_search"/>
+        <field name="context">{'search_default_filter_disbursed': 0}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Buat Pengajuan Penyaluran Manfaat Wakaf Baru
+            </p>
+            <p>
+                Kelola proses pengajuan bantuan, persetujuan komite penyaluran, pencatatan otomatis beban akuntansi PSAK 412, hingga pencetakan kuitansi &amp; BAST.
+            </p>
+        </field>
+    </record>
+</odoo>

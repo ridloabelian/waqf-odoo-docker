@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Program Standar Penyaluran Manfaat Wakaf -->
+    <record id="program_education_scholarship" model="waqf.distribution.program">
+        <field name="name">Beasiswa Santri &amp; Kader Umat</field>
+        <field name="code">PRG-EDU-01</field>
+        <field name="sector">education</field>
+        <field name="budget_allocated">100000000.0</field>
+        <field name="description">Penyaluran beasiswa pendidikan untuk santri berprestasi, dhuafa, dan penghafal Al-Qur'an.</field>
+    </record>
+
+    <record id="program_health_clinic" model="waqf.distribution.program">
+        <field name="name">Layanan Kesehatan &amp; Klinik Wakaf Dhuafa</field>
+        <field name="code">PRG-HLT-01</field>
+        <field name="sector">health</field>
+        <field name="budget_allocated">75000000.0</field>
+        <field name="description">Bantuan pembiayaan obat, persalinan, dan pemeriksaan medis gratis bagi kaum dhuafa.</field>
+    </record>
+
+    <record id="program_economic_empowerment" model="waqf.distribution.program">
+        <field name="name">Inkubasi &amp; Penguatan UMKM Barokah</field>
+        <field name="code">PRG-ECO-01</field>
+        <field name="sector">economic</field>
+        <field name="budget_allocated">150000000.0</field>
+        <field name="description">Bantuan modal bergulir syariah (qardhul hasan) dan sarana usaha bagi pelaku usaha mikro mustahiq.</field>
+    </record>
+
+    <record id="program_social_mosque" model="waqf.distribution.program">
+        <field name="name">Revitalisasi Sarana Ibadah &amp; Pembinaan Da'i</field>
+        <field name="code">PRG-SOC-01</field>
+        <field name="sector">social_religious</field>
+        <field name="budget_allocated">50000000.0</field>
+        <field name="description">Bantuan renovasi masjid/musholla di pelosok dan kafalah da'i di daerah terpencil.</field>
+    </record>
+</odoo>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="seq_waqf_distribution" model="ir.sequence">
+        <field name="name">Nomor Penyaluran Manfaat Wakaf</field>
+        <field name="code">waqf.distribution</field>
+        <field name="prefix">DISB/%(year)s/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+</odoo>

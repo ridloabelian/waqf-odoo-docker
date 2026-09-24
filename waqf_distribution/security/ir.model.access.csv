@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_waqf_beneficiary_user,waqf.beneficiary.user,model_waqf_beneficiary,waqf_core.group_waqf_user,1,1,1,0
+access_waqf_beneficiary_manager,waqf.beneficiary.manager,model_waqf_beneficiary,waqf_core.group_waqf_manager,1,1,1,1
+access_waqf_distribution_program_user,waqf.distribution.program.user,model_waqf_distribution_program,waqf_core.group_waqf_user,1,1,1,0
+access_waqf_distribution_program_manager,waqf.distribution.program.manager,model_waqf_distribution_program,waqf_core.group_waqf_manager,1,1,1,1
+access_waqf_distribution_user,waqf.distribution.user,model_waqf_distribution,waqf_core.group_waqf_user,1,1,1,0
+access_waqf_distribution_manager,waqf.distribution.manager,model_waqf_distribution,waqf_core.group_waqf_manager,1,1,1,1

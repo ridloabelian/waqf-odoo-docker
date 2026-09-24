@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_waqf_distribution_receipt" model="ir.actions.report">
+        <field name="name">Tanda Terima &amp; BAST Penyaluran Manfaat</field>
+        <field name="model">waqf.distribution</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">waqf_distribution.report_disbursement_receipt_document</field>
+        <field name="report_file">waqf_distribution.report_disbursement_receipt_document</field>
+        <field name="print_report_name">'BAST_Penyaluran_' + object.name.replace('/', '_')</field>
+        <field name="binding_model_id" ref="model_waqf_distribution"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>
