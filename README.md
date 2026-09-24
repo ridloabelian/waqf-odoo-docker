@@ -3,7 +3,7 @@
 > **Paket Instalasi Turnkey (1-Click Ready-to-Deploy) Sistem ERP Wakaf Berstandar PSAK 412 (PSAK 112) & LSP BWI**  
 > Inisiatif kolaboratif **Forum Wakaf Produktif (FWP / [fwp.or.id](https://fwp.or.id))** bersama **Asosiasi Nazhir Indonesia (ANI / [ani.or.id](https://ani.or.id))** untuk kemandirian, transparansi, dan tata kelola Nazhir di seluruh Indonesia.
 
-[![Odoo Version](https://img.shields.io/badge/Odoo-19.0%20%7C%2017.0%20Community-714B67?logo=odoo&logoColor=white)](https://www.odoo.com)
+[![Odoo Version](https://img.shields.io/badge/Odoo-19.0%20%7C%2018.0%20(LTS)%20%7C%2017.0-714B67?logo=odoo&logoColor=white)](https://www.odoo.com)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17--alpine%20%7C%2016-336791?logo=postgresql&logoColor=white)](https://www.postgresql.org)
 [![Proxy](https://img.shields.io/badge/Reverse%20Proxy-Caddy%202-00ADD8?logo=caddy&logoColor=white)](https://caddyserver.com)
 [![Accounting Standard](https://img.shields.io/badge/Standard-PSAK%20412%20(112)%20%7C%20LSP%20BWI-059669)](https://www.bwi.go.id)
@@ -61,7 +61,7 @@ flowchart TD
 
         subgraph DockerNet ["🔒 Internal Bridge Network (waqf-network)"]
             Proxy["Service 'proxy'\n(Caddy 2 Alpine)\n- Auto SSL Let's Encrypt\n- HTTP/3 & Gzip/Zstd\n- WebSocket Routing"]
-            Web["Service 'web'\n(Odoo 19.0 / 17.0 Community)\n- Multi-Worker Pre-fork\n- Proxy Mode True\n- PSAK 112 Engine"]
+            Web["Service 'web'\n(Odoo 19.0 / 18.0 LTS / 17.0)\n- Multi-Worker Pre-fork\n- Proxy Mode True\n- PSAK 112/412 Engine"]
             DB["Service 'db'\n(PostgreSQL 17 / 16 Alpine)\n- Tuned Buffer Cache\n- Healthchecked\n- Port 5432 Terisolasi"]
             
             Proxy -->|Trafik Web / :8069| Web
