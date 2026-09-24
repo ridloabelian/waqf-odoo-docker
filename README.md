@@ -1,12 +1,13 @@
 # 🕌 Waqf Odoo Docker
 
-> **Paket Instalasi Turnkey (1-Click Ready-to-Deploy) Sistem ERP Wakaf Berstandar PSAK 112 & LSP BWI**  
-> Diinisiasi dan dikembangkan oleh **Forum Wakaf Produktif (FWP / [fwp.or.id](https://fwp.or.id))** untuk kemandirian dan tata kelola Nazhir di seluruh Indonesia.
+> **Paket Instalasi Turnkey (1-Click Ready-to-Deploy) Sistem ERP Wakaf Berstandar PSAK 412 (PSAK 112) & LSP BWI**  
+> Inisiatif kolaboratif **Forum Wakaf Produktif (FWP / [fwp.or.id](https://fwp.or.id))** bersama **Asosiasi Nazhir Indonesia (ANI / [nazhir.or.id](https://nazhir.or.id))** untuk kemandirian, transparansi, dan tata kelola Nazhir di seluruh Indonesia.
 
 [![Odoo Version](https://img.shields.io/badge/Odoo-19.0%20%7C%2017.0%20Community-714B67?logo=odoo&logoColor=white)](https://www.odoo.com)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17--alpine%20%7C%2016-336791?logo=postgresql&logoColor=white)](https://www.postgresql.org)
 [![Proxy](https://img.shields.io/badge/Reverse%20Proxy-Caddy%202-00ADD8?logo=caddy&logoColor=white)](https://caddyserver.com)
-[![Accounting Standard](https://img.shields.io/badge/Standard-PSAK%20112%20%7C%20LSP%20BWI-059669)](https://www.bwi.go.id)
+[![Accounting Standard](https://img.shields.io/badge/Standard-PSAK%20412%20(112)%20%7C%20LSP%20BWI-059669)](https://www.bwi.go.id)
+[![Collaboration](https://img.shields.io/badge/Initiative-FWP%20%C3%97%20ANI-10B981)](https://fwp.or.id)
 [![Docker Compose](https://img.shields.io/badge/Docker%20Compose-v2-2496ED?logo=docker&logoColor=white)](https://docs.docker.com/compose/)
 [![License](https://img.shields.io/badge/License-LGPL--3.0-blue.svg)](LICENSE)
 
@@ -19,7 +20,7 @@
 4. [Panduan Cepat: Deploy Odoo Wakaf dalam 5 Menit](#-panduan-cepat-deploy-odoo-wakaf-dalam-5-menit)
 5. [Struktur Repositori](#-struktur-repositori)
 6. [Fitur Keamanan & Performa Produksi](#-fitur-keamanan--performa-produksi)
-7. [Ekosistem Modul Wakaf FWP](#-ekosistem-modul-wakaf-fwp)
+7. [Ekosistem Modul Wakaf FWP & ANI](#-ekosistem-modul-wakaf-fwp--ani)
 8. [Manajemen Operasional & Pemeliharaan](#-manajemen-operasional--pemeliharaan)
    - [Perintah Docker Harian](#perintah-docker-harian)
    - [Otomasi Backup Harian (Cron Job)](#otomasi-backup-harian-cron-job)
@@ -32,13 +33,13 @@
 
 ## 🌟 Latar Belakang & Visi Proyek
 
-Pengelolaan wakaf di Indonesia menuntut akuntabilitas publik yang tinggi sesuai amanat **UU No. 41 Tahun 2004 tentang Wakaf**, standar akuntansi **PSAK 112 (Akuntansi Wakaf)** dari Ikatan Akuntan Indonesia (IAI), serta regulasi **Badan Wakaf Indonesia (BWI)**.
+Pengelolaan wakaf di Indonesia menuntut akuntabilitas publik yang tinggi sesuai amanat **UU No. 41 Tahun 2004 tentang Wakaf**, standar akuntansi **PSAK 412: Akuntansi Wakaf** (sebelumnya diterbitkan sebagai **PSAK 112** pasca-rekodifikasi SAK Syariah oleh IAI), serta standar kompetensi kerja **LSP BWI (Badan Wakaf Indonesia)**.
 
-Banyak lembaga Nazhir di daerah memiliki keterbatasan dalam membangun infrastruktur TI mandiri dan sering terkendala biaya lisensi software komersial yang mahal. **`waqf-odoo-docker`** hadir sebagai solusi instalasi instan (turnkey package) yang memungkinkan Nazhir menyewa VPS Linux standar (Ubuntu 22.04/24.04), menjalankan satu perintah inisialisasi, dan langsung memiliki sistem ERP Wakaf siap produksi yang:
+Banyak lembaga Nazhir di daerah memiliki keterbatasan dalam membangun infrastruktur TI mandiri dan sering terkendala biaya lisensi software komersial yang mahal. Oleh karena itu, **Forum Wakaf Produktif (FWP)** dan **Asosiasi Nazhir Indonesia (ANI)** berkolaborasi menghadirkan **`waqf-odoo-docker`** sebagai solusi instalasi instan (*turnkey package*). Paket ini memungkinkan Nazhir menyewa VPS Linux standar (Ubuntu 22.04/24.04), menjalankan satu perintah inisialisasi, dan langsung memiliki sistem ERP Wakaf siap produksi yang:
 
 - **Efisien**: Dioptimasi khusus untuk VPS ekonomis (4 GB – 8 GB RAM).
 - **Aman**: Isolasi port internal, proteksi pemilih database, dan sertifikat SSL otomatis.
-- **Patuh Syariah**: Terintegrasi langsung dengan modul akuntansi wakaf PSAK 112 dan tata kelola Nazhir tersertifikasi LSP BWI.
+- **Patuh Syariah**: Terintegrasi langsung dengan modul akuntansi wakaf **PSAK 412 / 112** dan tata kelola Nazhir tersertifikasi **LSP BWI**.
 
 ---
 
@@ -218,16 +219,16 @@ Dikonfigurasi untuk VPS 4 GB - 8 GB RAM dengan formula:
 
 ---
 
-## 🧩 Ekosistem Modul Wakaf FWP
+## 🧩 Ekosistem Modul Wakaf FWP & ANI
 
-Direktori `./extra-addons` disiapkan untuk memuat modul-modul resmi dari Forum Wakaf Produktif:
+Direktori `./extra-addons` disiapkan untuk memuat modul-modul resmi hasil kolaborasi Forum Wakaf Produktif (FWP) dan Asosiasi Nazhir Indonesia (ANI):
 
 | Modul | Standar Acuan | Fungsi Utama |
 | :--- | :--- | :--- |
 | **`waqf_core`** | UU No. 41/2004 & LSP BWI | Master Data Wakif, Mauquf 'Alaih, Akta Ikrar Wakaf (AIW/APAIW), legalitas sertifikat tanah wakaf. |
-| **`l10n_id_waqf_psak112`** | PSAK 112 (IAI) | Bagan Akun Standar Akuntansi Wakaf (COA), Laporan Posisi Keuangan, Laporan Rincian Aset Wakaf, Laporan Aktivitas, Laporan Arus Kas, dan Catatan atas Laporan Keuangan (CALK). |
+| **`l10n_id_waqf_psak112`** | PSAK 412 / 112 (IAI) | Bagan Akun Standar Akuntansi Wakaf (COA), Laporan Posisi Keuangan, Laporan Rincian Aset Wakaf, Laporan Aktivitas, Laporan Arus Kas, dan Catatan atas Laporan Keuangan (CALK). |
 | **`waqf_cash`** | Fatwa DSN-MUI & BWI | Tata kelola Wakaf Uang, penempatan portofolio syariah (CWLS, SBSN, Deposito Mudharabah). |
-| **`waqf_property`** | BWI & FWP | Tata kelola Wakaf Produktif (Tanah, Ruko, Rumah Sakit), pengelolaan aset sewa dan pemeliharaan. |
+| **`waqf_property`** | BWI, FWP & ANI | Tata kelola Wakaf Produktif (Tanah, Ruko, Rumah Sakit), pengelolaan aset sewa dan pemeliharaan. |
 | **`waqf_distribution`** | Syariah & UU Wakaf | Distribusi surplus hasil pengelolaan wakaf ke penerima manfaat serta alokasi hak nazhir (maks. 10%). |
 
 Untuk mengunduh modul-modul tersebut, cukup jalankan:
@@ -331,13 +332,15 @@ Ubah nilai <code>ADMIN_PASSWORD</code> di dalam file <code>.env</code>, lalu jal
 
 ---
 
-## 🤝 Kontribusi & Lisensi
+## 🤝 Inisiator & Kontribusi
 
-Proyek ini bersifat sumber terbuka (Open-Source) di bawah lisensi **LGPL-3.0**. Kami mengundang developer, akuntan syariah, dan praktisi wakaf di seluruh Indonesia untuk berkontribusi.
+Proyek ini bersifat sumber terbuka (Open-Source) di bawah lisensi **LGPL-3.0**. Diinisiasi secara kolaboratif oleh:
+- **Forum Wakaf Produktif (FWP)** – [fwp.or.id](https://fwp.or.id)
+- **Asosiasi Nazhir Indonesia (ANI)** – [nazhir.or.id](https://nazhir.or.id)
+- **Didukung oleh Standar Kompetensi**: LSP Badan Wakaf Indonesia (BWI)
 
-- **Website FWP**: [fwp.or.id](https://fwp.or.id)
-- **Komite Teknis**: Forum Wakaf Produktif (FWP)
+Kami mengundang developer, akuntan syariah, akademisi, dan praktisi wakaf di seluruh Indonesia untuk berkontribusi.
 - **Laporkan Masalah / Permintaan Fitur**: Silakan buat *Issue* atau *Pull Request* pada repositori ini.
 
 ---
-*Semoga menjadi amal jariyah bagi para pengembang dan memudahkan seluruh Nazhir di Indonesia mengelola amanah wakaf secara profesional dan transparan.*
+*Semoga menjadi amal jariyah bagi para kontributor dan memudahkan seluruh Nazhir di Indonesia mengelola amanah wakaf secara profesional, akuntabel, dan transparan.*

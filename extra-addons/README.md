@@ -2,9 +2,9 @@
 
 Direktori ini di-*mount* langsung ke dalam container Odoo pada path `/mnt/extra-addons`.
 
-## 📦 Struktur Modul Ekosistem FWP
+## 📦 Struktur Modul Ekosistem FWP & ANI
 
-Modul-modul sistem ERP Wakaf FWP yang direkomendasikan untuk diletakkan di direktori ini meliputi:
+Modul-modul sistem ERP Wakaf hasil kolaborasi FWP dan Asosiasi Nazhir Indonesia (ANI) yang direkomendasikan meliputi:
 
 1. **`waqf_core`**
    - Manajemen Master Data: Profil Nazhir, Data Wakif (Individu & Korporasi), Data Mauquf 'Alaih.
@@ -12,7 +12,7 @@ Modul-modul sistem ERP Wakaf FWP yang direkomendasikan untuk diletakkan di direk
    - Standar Kompetensi LSP BWI (Lembaga Sertifikasi Profesi Badan Wakaf Indonesia).
 
 2. **`l10n_id_waqf_psak112`**
-   - Bagan Akun Standar Akuntansi Wakaf (Chart of Accounts PSAK 112).
+   - Bagan Akun Standar Akuntansi Wakaf (COA PSAK 412 / sebelumnya PSAK 112).
    - Laporan Posisi Keuangan Entitas Wakaf (Neraca).
    - Laporan Rincian Aset Wakaf (Aset Wakaf Tidak Bergerak & Bergerak).
    - Laporan Aktivitas Wakaf (Penerimaan, Pengelolaan, dan Penyaluran Manfaat).

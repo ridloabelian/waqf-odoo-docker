@@ -1,6 +1,7 @@
 # ==============================================================================
 # WAQF ODOO DOCKER COMPOSE CONFIGURATION
-# Forum Wakaf Produktif (FWP) - Sistem ERP Wakaf Berstandar PSAK 112 & LSP BWI
+# Inisiatif Bersama Forum Wakaf Produktif (FWP) & Asosiasi Nazhir Indonesia (ANI)
+# Sistem ERP Wakaf Berstandar PSAK 412 (PSAK 112) & LSP BWI
 # ==============================================================================
 
 services:

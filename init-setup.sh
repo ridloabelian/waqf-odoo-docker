@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # ==============================================================================
 # WAQF ODOO DOCKER - INITIAL SETUP & PROVISIONING SCRIPT
-# Forum Wakaf Produktif (FWP) - Standar PSAK 112 & LSP BWI
+# Forum Wakaf Produktif (FWP) & Asosiasi Nazhir Indonesia (ANI)
+# Standar Akuntansi PSAK 412 (PSAK 112) & Standar LSP BWI
 # ==============================================================================
 set -euo pipefail
 
@@ -15,8 +16,8 @@ CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
 echo -e "${GREEN}===================================================================${NC}"
-echo -e "${CYAN}    INISIALISASI ODOO WAKAF DOCKER (PSAK 112 & LSP BWI)           ${NC}"
-echo -e "${PURPLE}           Forum Wakaf Produktif (FWP) - fwp.or.id                 ${NC}"
+echo -e "${CYAN}   INISIALISASI ODOO WAKAF DOCKER (PSAK 412 / 112 & LSP BWI)      ${NC}"
+echo -e "${PURPLE}  Kolaborasi Forum Wakaf Produktif (FWP) & Asosiasi Nazhir (ANI)   ${NC}"
 echo -e "${GREEN}===================================================================${NC}"
 echo ""
 

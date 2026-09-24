@@ -1,6 +1,7 @@
 # ==============================================================================
 # CADDY REVERSE PROXY CONFIGURATION - WAQF ODOO DOCKER
-# Forum Wakaf Produktif (FWP) - Otomatis SSL Let's Encrypt & WebSocket
+# Forum Wakaf Produktif (FWP) & Asosiasi Nazhir Indonesia (ANI)
+# Otomatis SSL Let's Encrypt & WebSocket
 # ==============================================================================
 
 {
